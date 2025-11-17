@@ -1,0 +1,8 @@
+transformers==4.53.0
+evaluate==0.4.4
+torch==2.7.1
+soundfile==0.13.1
+jiwer<4.0.0
+librosa==0.11.0
+matplotlib==3.10.3
+seaborn==0.13.2

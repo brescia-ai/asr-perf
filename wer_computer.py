@@ -9,7 +9,7 @@ import os
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
 NUM_SAMPLES = 500       # samples per dataset
-OUTPUT_PATH = "results/bs-transcription-1"
+OUTPUT_PATH = "results/it/parakeet-tdt-0.6b-v3"
 
 #
 ##

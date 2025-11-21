@@ -6,7 +6,7 @@ Assessing the performance of ASR systems.
 | Language        | Voxpopuli | MLS | Common Voice 17.0 | Minds14 |
 |-----------------|-----------|-----|-------------------|---------|
 | Italian (it)    | ✓         | ✓   | ✓                 | ✓       |
-| English (en)    | ✓         | ✓   | ✓                 | ✓       |
+| English (en)    | ✓         | ✕   | ✓                 | ✓       |
 | French (fr)     | ✓         | ✓   | ✓                 | ✓       |
 | German (de)     | ✓         | ✓   | ✓                 | ✓       |
 | Spanish (es)    | ✓         | ✓   | ✓                 | ✓       |
@@ -36,7 +36,7 @@ We consider an AI model ✅ deployable on one given language if its performance 
 
 ### parakeet-tdt-0.6b-v3
 - ✅ Italian (it)
-- English (en)
+- ✅ English (en)
 - French (fr)
 - German (de)
 - Spanish (es)

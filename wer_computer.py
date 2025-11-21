@@ -88,7 +88,7 @@ print(f"MLS WER: {np.mean(mls_wers_list)}")
 
 ################################# CV-17 #################################
 cv_17 = datasets.load_dataset(
-    "mozilla-foundation/common_voice_17_0",
+    "fsicoli/common_voice_17_0",
     "it",
     split="test",
     trust_remote_code=True,

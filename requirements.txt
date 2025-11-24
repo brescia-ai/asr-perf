@@ -6,3 +6,4 @@ jiwer<4.0.0
 librosa==0.11.0
 matplotlib==3.10.3
 seaborn==0.13.2
+python-dotenv==1.2.1

@@ -37,7 +37,7 @@ We consider an AI model ✅ deployable on one given language if its performance 
 ### parakeet-tdt-0.6b-v3
 - ✅ Italian (it)
 - ✅ English (en)
-- French (fr)
+- ✅ French (fr)
 - German (de)
 - Spanish (es)
 - Dutch (nl)

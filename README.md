@@ -3,6 +3,9 @@ Assessing the performance of ASR systems.
 
 ## Datasets
 
+✓ = dataset available for this language
+✕ = dataset not available for this language
+
 | Language        | Voxpopuli | MLS | Common Voice 17.0 | Minds14 |
 |-----------------|-----------|-----|-------------------|---------|
 | Italian (it)    | ✓         | ✓   | ✓                 | ✓       |

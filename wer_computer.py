@@ -9,14 +9,15 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-NUM_SAMPLES = 450       # samples per dataset
-OUTPUT_PATH = "results/fr/parakeet-tdt-0.6b-v3"
+NUM_SAMPLES = 450  # samples per dataset
+OUTPUT_PATH = "results/de/parakeet-tdt-0.6b-v3"
 
 #
 ##
 ###
 ##
 #
+
 
 def computeWer(dataset, num_samples, text_column_name, inferenceFunction):
 
@@ -35,19 +36,17 @@ def computeWer(dataset, num_samples, text_column_name, inferenceFunction):
     for i in range(num_samples):
         ref = norm_references_list[i]
         pred = norm_predictions_list[i]
-        
+
         # Handle empty strings to avoid division by zero
         if not ref.strip() and not pred.strip():
             wers_list.append(0.0)  # Both empty = perfect match
         elif not ref.strip():
             wers_list.append(1.0)  # Empty reference, non-empty prediction = 100% error
         else:
-            wers_list.append(
-                wer_metric.compute(references=[ref], predictions=[pred])
-            )
-    
+            wers_list.append(wer_metric.compute(references=[ref], predictions=[pred]))
 
     return wers_list
+
 
 #
 ##
@@ -63,7 +62,7 @@ dotenv.load_dotenv(".env.secrets")
 ################################# Voxpopuli #################################
 print("Testing Voxpopuli...")
 voxpopuli = datasets.load_dataset(
-    "facebook/voxpopuli", "fr", split="test", trust_remote_code=True
+    "facebook/voxpopuli", "de", split="test", trust_remote_code=True
 )  # 1177 samples (too often with incorrect labels)
 voxpopuli = voxpopuli.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 voxpopuli_wers_list = computeWer(
@@ -84,7 +83,7 @@ output_stats["voxpopuli"] = {
 ################################# MLS #################################
 print("Testing MLS...")
 mls = datasets.load_dataset(
-    "facebook/multilingual_librispeech", "french", split="test"
+    "facebook/multilingual_librispeech", "german", split="test"
 )  # 1260 samples
 mls = mls.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 mls_wers_list = computeWer(
@@ -106,7 +105,7 @@ output_stats["mls"] = {
 print("Testing CV-17...")
 cv_17 = datasets.load_dataset(
     "fsicoli/common_voice_17_0",
-    "fr",
+    "de",
     split="test",
     trust_remote_code=True,
     token=True,
@@ -126,11 +125,11 @@ output_stats["cv_17"] = {
     "min": np.min(cv_17_wers_list),
     "max": np.max(cv_17_wers_list),
 }
-    
+
 ################################# Minds14 #################################
 print("Testing Minds14...")
 mind_14 = datasets.load_dataset(
-    "PolyAI/minds14", "fr-FR", split="train", trust_remote_code=True
+    "PolyAI/minds14", "de-DE", split="train", trust_remote_code=True
 )  # (too often with incorrect labels)
 mind_14 = mind_14.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 mind_14_wers_list = computeWer(

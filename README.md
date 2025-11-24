@@ -41,7 +41,7 @@ We consider an AI model ✅ deployable on one given language if its performance 
 - ✅ Italian (it)
 - ✅ English (en)
 - ✅ French (fr)
-- German (de)
+- ✅ German (de)
 - Spanish (es)
 - Dutch (nl)
 - Portuguese (pt)

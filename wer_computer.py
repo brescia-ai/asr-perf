@@ -10,7 +10,7 @@ import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
 NUM_SAMPLES = 450  # samples per dataset
-OUTPUT_PATH = "results/es/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/nl/parakeet-tdt-0.6b-v3"
 
 #
 ##
@@ -62,7 +62,7 @@ dotenv.load_dotenv(".env.secrets")
 ################################# Voxpopuli #################################
 print("Testing Voxpopuli...")
 voxpopuli = datasets.load_dataset(
-    "facebook/voxpopuli", "es", split="test", trust_remote_code=True
+    "facebook/voxpopuli", "nl", split="test", trust_remote_code=True
 )  # 1177 samples (too often with incorrect labels)
 voxpopuli = voxpopuli.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 voxpopuli_wers_list = computeWer(
@@ -83,7 +83,7 @@ output_stats["voxpopuli"] = {
 ################################# MLS #################################
 print("Testing MLS...")
 mls = datasets.load_dataset(
-    "facebook/multilingual_librispeech", "spanish", split="test"
+    "facebook/multilingual_librispeech", "dutch", split="test"
 )  # 1260 samples
 mls = mls.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 mls_wers_list = computeWer(
@@ -105,7 +105,7 @@ output_stats["mls"] = {
 print("Testing CV-17...")
 cv_17 = datasets.load_dataset(
     "fsicoli/common_voice_17_0",
-    "es",
+    "nl",
     split="test",
     trust_remote_code=True,
     token=True,
@@ -129,7 +129,7 @@ output_stats["cv_17"] = {
 ################################# Minds14 #################################
 print("Testing Minds14...")
 mind_14 = datasets.load_dataset(
-    "PolyAI/minds14", "es-ES", split="train", trust_remote_code=True
+    "PolyAI/minds14", "nl-NL", split="train", trust_remote_code=True
 )  # (too often with incorrect labels)
 mind_14 = mind_14.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 mind_14_wers_list = computeWer(

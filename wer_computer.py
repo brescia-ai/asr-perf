@@ -10,7 +10,7 @@ import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
 NUM_SAMPLES = 450  # samples per dataset
-OUTPUT_PATH = "results/nl/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/pl/parakeet-tdt-0.6b-v3"
 
 #
 ##
@@ -62,8 +62,8 @@ dotenv.load_dotenv(".env.secrets")
 ################################# Voxpopuli #################################
 print("Testing Voxpopuli...")
 voxpopuli = datasets.load_dataset(
-    "facebook/voxpopuli", "nl", split="test", trust_remote_code=True
-)  # 1177 samples (too often with incorrect labels)
+    "facebook/voxpopuli", "pl", split="test", trust_remote_code=True
+)  # italian: 1177 samples (too often with incorrect labels)
 voxpopuli = voxpopuli.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 voxpopuli_wers_list = computeWer(
     dataset=voxpopuli,
@@ -83,8 +83,8 @@ output_stats["voxpopuli"] = {
 ################################# MLS #################################
 print("Testing MLS...")
 mls = datasets.load_dataset(
-    "facebook/multilingual_librispeech", "dutch", split="test"
-)  # 1260 samples
+    "facebook/multilingual_librispeech", "polish", split="test"
+)  # italian: 1260 samples
 mls = mls.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 mls_wers_list = computeWer(
     dataset=mls,
@@ -105,7 +105,7 @@ output_stats["mls"] = {
 print("Testing CV-17...")
 cv_17 = datasets.load_dataset(
     "fsicoli/common_voice_17_0",
-    "nl",
+    "pl",
     split="test",
     trust_remote_code=True,
     token=True,
@@ -129,8 +129,8 @@ output_stats["cv_17"] = {
 ################################# Minds14 #################################
 print("Testing Minds14...")
 mind_14 = datasets.load_dataset(
-    "PolyAI/minds14", "nl-NL", split="train", trust_remote_code=True
-)  # (too often with incorrect labels)
+    "PolyAI/minds14", "pl-PL", split="train", trust_remote_code=True
+)  # italian: (too often with incorrect labels)
 mind_14 = mind_14.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 mind_14_wers_list = computeWer(
     dataset=mind_14,

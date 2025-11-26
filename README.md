@@ -45,7 +45,7 @@ We consider an AI model ✅ deployable on one given language if its performance 
 5. ✅ Italian (it)
 6. ✅ Spanish (es)
 7. Ukrainian (uk)
-8. Polish (pl)
+8. ✅ Polish (pl)
 9. Romanian (ro)
 10. ✅ Dutch (nl)
 11. Czech (cs)

@@ -9,7 +9,6 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-NUM_SAMPLES = 450  # samples per dataset
 OUTPUT_PATH = "results/pl/parakeet-tdt-0.6b-v3"
 
 #
@@ -19,9 +18,7 @@ OUTPUT_PATH = "results/pl/parakeet-tdt-0.6b-v3"
 #
 
 
-def computeWer(dataset, num_samples, text_column_name, inferenceFunction):
-
-    dataset = dataset.select(range(num_samples))  # select the first num_samples
+def computeWer(dataset, text_column_name, inferenceFunction):
 
     normalizer = BasicTextNormalizer()
     wer_metric = evaluate.load("wer")
@@ -33,10 +30,7 @@ def computeWer(dataset, num_samples, text_column_name, inferenceFunction):
     norm_predictions_list = [normalizer(prediction) for prediction in predictions_list]
 
     wers_list = []
-    for i in range(num_samples):
-        ref = norm_references_list[i]
-        pred = norm_predictions_list[i]
-
+    for ref, pred in zip(norm_references_list, norm_predictions_list):
         # Handle empty strings to avoid division by zero
         if not ref.strip() and not pred.strip():
             wers_list.append(0.0)  # Both empty = perfect match
@@ -45,7 +39,9 @@ def computeWer(dataset, num_samples, text_column_name, inferenceFunction):
         else:
             wers_list.append(wer_metric.compute(references=[ref], predictions=[pred]))
 
-    return wers_list
+    cardinality = len(wers_list)
+
+    return wers_list, cardinality
 
 
 #
@@ -56,7 +52,6 @@ def computeWer(dataset, num_samples, text_column_name, inferenceFunction):
 
 os.makedirs(OUTPUT_PATH)
 output_data = {}
-output_stats = {"samples_per_dataset": NUM_SAMPLES}
 dotenv.load_dotenv(".env.secrets")
 
 ################################# Voxpopuli #################################
@@ -65,15 +60,15 @@ voxpopuli = datasets.load_dataset(
     "facebook/voxpopuli", "pl", split="test", trust_remote_code=True
 )  # italian: 1177 samples (too often with incorrect labels)
 voxpopuli = voxpopuli.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-voxpopuli_wers_list = computeWer(
+voxpopuli_wers_list, num_samples = computeWer(
     dataset=voxpopuli,
-    num_samples=NUM_SAMPLES,
     text_column_name="raw_text",
     inferenceFunction=INFERENCE_FUNCTION,
 )
 print(f"WER = {np.mean(voxpopuli_wers_list)}")
 output_data["voxpopuli"] = voxpopuli_wers_list
 output_stats["voxpopuli"] = {
+    "num_samples": num_samples,
     "mean": np.mean(voxpopuli_wers_list),
     "std": np.std(voxpopuli_wers_list),
     "min": np.min(voxpopuli_wers_list),
@@ -86,15 +81,15 @@ mls = datasets.load_dataset(
     "facebook/multilingual_librispeech", "polish", split="test"
 )  # italian: 1260 samples
 mls = mls.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-mls_wers_list = computeWer(
+mls_wers_list, num_samples = computeWer(
     dataset=mls,
-    num_samples=NUM_SAMPLES,
     text_column_name="transcript",
     inferenceFunction=INFERENCE_FUNCTION,
 )
 print(f"WER = {np.mean(mls_wers_list)}")
 output_data["mls"] = mls_wers_list
 output_stats["mls"] = {
+    "num_samples": num_samples,
     "mean": np.mean(mls_wers_list),
     "std": np.std(mls_wers_list),
     "min": np.min(mls_wers_list),
@@ -111,15 +106,15 @@ cv_17 = datasets.load_dataset(
     token=True,
 )
 cv_17 = cv_17.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-cv_17_wers_list = computeWer(
+cv_17_wers_list, num_samples = computeWer(
     dataset=cv_17,
-    num_samples=NUM_SAMPLES,
     text_column_name="sentence",
     inferenceFunction=INFERENCE_FUNCTION,
 )
 print(f"WER = {np.mean(cv_17_wers_list)}")
 output_data["cv_17"] = cv_17_wers_list
 output_stats["cv_17"] = {
+    "num_samples": num_samples,
     "mean": np.mean(cv_17_wers_list),
     "std": np.std(cv_17_wers_list),
     "min": np.min(cv_17_wers_list),
@@ -132,15 +127,15 @@ mind_14 = datasets.load_dataset(
     "PolyAI/minds14", "pl-PL", split="train", trust_remote_code=True
 )  # italian: (too often with incorrect labels)
 mind_14 = mind_14.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-mind_14_wers_list = computeWer(
+mind_14_wers_list, num_samples = computeWer(
     dataset=mind_14,
-    num_samples=NUM_SAMPLES,
     text_column_name="transcription",
     inferenceFunction=INFERENCE_FUNCTION,
 )
 print(f"WER = {np.mean(mind_14_wers_list)}")
 output_data["mind_14"] = mind_14_wers_list
 output_stats["mind_14"] = {
+    "num_samples": num_samples,
     "mean": np.mean(mind_14_wers_list),
     "std": np.std(mind_14_wers_list),
     "min": np.min(mind_14_wers_list),

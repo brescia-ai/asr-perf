@@ -9,7 +9,7 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-OUTPUT_PATH = "results/ro/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/cs/parakeet-tdt-0.6b-v3"
 
 #
 ##
@@ -58,7 +58,7 @@ dotenv.load_dotenv(".env.secrets")
 ################################ Voxpopuli #################################
 print("Testing Voxpopuli...")
 voxpopuli = datasets.load_dataset(
-    "facebook/voxpopuli", "ro", split="test", trust_remote_code=True
+    "facebook/voxpopuli", "cs", split="test", trust_remote_code=True
 )  # italian: 1177 samples (too often with incorrect labels)
 voxpopuli = voxpopuli.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 voxpopuli_wers_list, num_samples = computeWer(
@@ -101,7 +101,7 @@ output_stats["voxpopuli"] = {
 print("Testing CV-22.0...")
 cv_22_0 = datasets.load_dataset(
     "fsicoli/common_voice_22_0",
-    "ro",
+    "cs",
     split="test",
     trust_remote_code=True,
     token=True,
@@ -122,26 +122,26 @@ output_stats["cv_22_0"] = {
     "max": np.max(cv_22_0_wers_list),
 }
 
-# ################################# Minds14 #################################
-# print("Testing Minds14...")
-# mind_14 = datasets.load_dataset(
-#     "PolyAI/minds14", "ru-RU", split="train", trust_remote_code=True
-# )  # italian: (too often with incorrect labels)
-# mind_14 = mind_14.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-# mind_14_wers_list, num_samples = computeWer(
-#     dataset=mind_14,
-#     text_column_name="transcription",
-#     inferenceFunction=INFERENCE_FUNCTION,
-# )
-# print(f"WER = {np.mean(mind_14_wers_list)} [{num_samples} samples]")
-# output_data["mind_14"] = mind_14_wers_list
-# output_stats["mind_14"] = {
-#     "num_samples": num_samples,
-#     "mean": np.mean(mind_14_wers_list),
-#     "std": np.std(mind_14_wers_list),
-#     "min": np.min(mind_14_wers_list),
-#     "max": np.max(mind_14_wers_list),
-# }
+################################# Minds14 #################################
+print("Testing Minds14...")
+mind_14 = datasets.load_dataset(
+    "PolyAI/minds14", "cs-CZ", split="train", trust_remote_code=True
+)  # italian: (too often with incorrect labels)
+mind_14 = mind_14.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+mind_14_wers_list, num_samples = computeWer(
+    dataset=mind_14,
+    text_column_name="transcription",
+    inferenceFunction=INFERENCE_FUNCTION,
+)
+print(f"WER = {np.mean(mind_14_wers_list)} [{num_samples} samples]")
+output_data["mind_14"] = mind_14_wers_list
+output_stats["mind_14"] = {
+    "num_samples": num_samples,
+    "mean": np.mean(mind_14_wers_list),
+    "std": np.std(mind_14_wers_list),
+    "min": np.min(mind_14_wers_list),
+    "max": np.max(mind_14_wers_list),
+}
 
 # ################################# Speech-MASSIVE-test #################################
 # print("Testing Speech-MASSIVE-test...")
@@ -167,49 +167,49 @@ output_stats["cv_22_0"] = {
 #     "max": np.max(speech_massive_test_wers_list),
 # }
 
-################################# Romanian speech synthesis 0.8.1 #################################
-print("Testing Romanian speech synthesis 0.8.1...")
-romanian_speech_synthesis_0_8_1 = datasets.load_dataset(
-    "gigant/romanian_speech_synthesis_0_8_1", split="test", trust_remote_code=True
-)
-romanian_speech_synthesis_0_8_1 = romanian_speech_synthesis_0_8_1.cast_column(
-    "audio", datasets.Audio(sampling_rate=16_000)
-)
-romanian_speech_synthesis_0_8_1_wers_list, num_samples = computeWer(
-    dataset=romanian_speech_synthesis_0_8_1,
-    text_column_name="sentence",
-    inferenceFunction=INFERENCE_FUNCTION,
-)
-print(f"WER = {np.mean(romanian_speech_synthesis_0_8_1_wers_list)} [{num_samples} samples]")
-output_data["romanian_speech_synthesis_0_8_1"] = romanian_speech_synthesis_0_8_1_wers_list
-output_stats["romanian_speech_synthesis_0_8_1"] = {
-    "num_samples": num_samples,
-    "mean": np.mean(romanian_speech_synthesis_0_8_1_wers_list),
-    "std": np.std(romanian_speech_synthesis_0_8_1_wers_list),
-    "min": np.min(romanian_speech_synthesis_0_8_1_wers_list),
-    "max": np.max(romanian_speech_synthesis_0_8_1_wers_list),
-}
+# ################################# Romanian speech synthesis 0.8.1 #################################
+# print("Testing Romanian speech synthesis 0.8.1...")
+# romanian_speech_synthesis_0_8_1 = datasets.load_dataset(
+#     "gigant/romanian_speech_synthesis_0_8_1", split="test", trust_remote_code=True
+# )
+# romanian_speech_synthesis_0_8_1 = romanian_speech_synthesis_0_8_1.cast_column(
+#     "audio", datasets.Audio(sampling_rate=16_000)
+# )
+# romanian_speech_synthesis_0_8_1_wers_list, num_samples = computeWer(
+#     dataset=romanian_speech_synthesis_0_8_1,
+#     text_column_name="sentence",
+#     inferenceFunction=INFERENCE_FUNCTION,
+# )
+# print(f"WER = {np.mean(romanian_speech_synthesis_0_8_1_wers_list)} [{num_samples} samples]")
+# output_data["romanian_speech_synthesis_0_8_1"] = romanian_speech_synthesis_0_8_1_wers_list
+# output_stats["romanian_speech_synthesis_0_8_1"] = {
+#     "num_samples": num_samples,
+#     "mean": np.mean(romanian_speech_synthesis_0_8_1_wers_list),
+#     "std": np.std(romanian_speech_synthesis_0_8_1_wers_list),
+#     "min": np.min(romanian_speech_synthesis_0_8_1_wers_list),
+#     "max": np.max(romanian_speech_synthesis_0_8_1_wers_list),
+# }
 
-################################# Echo #################################
-print("Testing Echo...")
-echo = datasets.load_dataset(
-    "readerbench/echo", split="test", trust_remote_code=True
-)
-echo = echo.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-echo_wers_list, num_samples = computeWer(
-    dataset=echo,
-    text_column_name="text",
-    inferenceFunction=INFERENCE_FUNCTION,
-)
-print(f"WER = {np.mean(echo_wers_list)} [{num_samples} samples]")
-output_data["echo"] = echo_wers_list
-output_stats["echo"] = {
-    "num_samples": num_samples,
-    "mean": np.mean(echo_wers_list),
-    "std": np.std(echo_wers_list),
-    "min": np.min(echo_wers_list),
-    "max": np.max(echo_wers_list),
-}
+# ################################# Echo #################################
+# print("Testing Echo...")
+# echo = datasets.load_dataset(
+#     "readerbench/echo", split="test", trust_remote_code=True
+# )
+# echo = echo.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+# echo_wers_list, num_samples = computeWer(
+#     dataset=echo,
+#     text_column_name="text",
+#     inferenceFunction=INFERENCE_FUNCTION,
+# )
+# print(f"WER = {np.mean(echo_wers_list)} [{num_samples} samples]")
+# output_data["echo"] = echo_wers_list
+# output_stats["echo"] = {
+#     "num_samples": num_samples,
+#     "mean": np.mean(echo_wers_list),
+#     "std": np.std(echo_wers_list),
+#     "min": np.min(echo_wers_list),
+#     "max": np.max(echo_wers_list),
+# }
 
 #
 ##

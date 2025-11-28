@@ -97,29 +97,29 @@ dotenv.load_dotenv(".env.secrets")
 #     "max": np.max(mls_wers_list),
 # }
 
-################################# CV-17 #################################
-print("Testing CV-17...")
-cv_17 = datasets.load_dataset(
-    "fsicoli/common_voice_17_0",
+################################# Common Voice 22.0 #################################
+print("Testing CV-22.0...")
+cv_22_0 = datasets.load_dataset(
+    "fsicoli/common_voice_22_0",
     "ru",
     split="test",
     trust_remote_code=True,
     token=True,
 )
-cv_17 = cv_17.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-cv_17_wers_list, num_samples = computeWer(
-    dataset=cv_17,
+cv_22_0 = cv_22_0.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+cv_22_0_wers_list, num_samples = computeWer(
+    dataset=cv_22_0,
     text_column_name="sentence",
     inferenceFunction=INFERENCE_FUNCTION,
 )
-print(f"WER = {np.mean(cv_17_wers_list)} [{num_samples} samples]")
-output_data["cv_17"] = cv_17_wers_list
-output_stats["cv_17"] = {
+print(f"WER = {np.mean(cv_22_0_wers_list)} [{num_samples} samples]")
+output_data["cv_22_0"] = cv_22_0_wers_list
+output_stats["cv_22_0"] = {
     "num_samples": num_samples,
-    "mean": np.mean(cv_17_wers_list),
-    "std": np.std(cv_17_wers_list),
-    "min": np.min(cv_17_wers_list),
-    "max": np.max(cv_17_wers_list),
+    "mean": np.mean(cv_22_0_wers_list),
+    "std": np.std(cv_22_0_wers_list),
+    "min": np.min(cv_22_0_wers_list),
+    "max": np.max(cv_22_0_wers_list),
 }
 
 ################################# Minds14 #################################

@@ -6,40 +6,42 @@ Assessing the performance of ASR systems.
 ✓ = dataset available for this language
 ✕ = dataset not available for this language
 
-| Language        | Voxpopuli | MLS | Common Voice 17.0 | Minds14 | Speech-MASSIVE-test |
-|-----------------|-----------|-----|-------------------|---------|---------------------|
-| Italian (it)    | ✓         | ✓   | ✓                 | ✓       | ✕                   |
-| English (en)    | ✓         | ✕   | ✓                 | ✓       | ✕                   |
-| French (fr)     | ✓         | ✓   | ✓                 | ✓       | ✓                   |
-| German (de)     | ✓         | ✓   | ✓                 | ✓       | ✓                   |
-| Spanish (es)    | ✓         | ✓   | ✓                 | ✓       | ✓                   |
-| Dutch (nl)      | ✓         | ✓   | ✓                 | ✓       | ✓                   |
-| Portuguese (pt) | ✕         | ✓   | ✓                 | ✓       | ✓                   |
-| Bulgarian (bg)  | ✕         | ✕   | ✓                 | ✕       | ✕                   |
-| Croatian (hr)   | ✓         | ✕   | ✓                 | ✕       | ✕                   |
-| Czech (cs)      | ✓         | ✕   | ✓                 | ✓       | ✕                   |
-| Danish (da)     | ✕         | ✕   | ✓                 | ✕       | ✕                   |
-| Estonian (et)   | ✓         | ✕   | ✓                 | ✕       | ✕                   |
-| Finnish (fi)    | ✓         | ✕   | ✓                 | ✕       | ✕                   |
-| Greek (el)      | ✕         | ✕   | ✓                 | ✕       | ✕                   |
-| Hungarian (hu)  | ✓         | ✕   | ✓                 | ✕       | ✓                   |
-| Latvian (lv)    | ✕         | ✕   | ✓                 | ✕       | ✕                   |
-| Lithuanian (lt) | ✓         | ✕   | ✓                 | ✕       | ✕                   |
-| Maltese (mt)    | ✕         | ✕   | ✓                 | ✕       | ✕                   |
-| Polish (pl)     | ✓         | ✓   | ✓                 | ✓       | ✓                   |
-| Romanian (ro)   | ✓         | ✕   | ✓                 | ✕       | ✕                   |
-| Slovak (sk)     | ✓         | ✕   | ✓                 | ✕       | ✕                   |
-| Slovenian (sl)  | ✓         | ✕   | ✓                 | ✕       | ✕                   |
-| Swedish (sv)    | ✕         | ✕   | ✓                 | ✕       | ✕                   |
-| Russian (ru)    | ✕         | ✕   | ✓                 | ✓       | ✓                   |
-| Ukrainian (uk)  | ✕         | ✕   | ✓                 | ✕       | ✕                   |
-| Arabic (ar)     | ✕         | ✕   | ✓                 | ✕       | ✓                   |
-| Korean (ko)     | ✕         | ✕   | ✓                 | ✓       | ✓                   |
-| Turkish (tr)    | ✕         | ✕   | ✓                 | ✓       | ✓                   |
-| Vietnamese (vi) | ✕         | ✕   | ✓                 | ✕       | ✓                   |
+| Language        | Voxpopuli | MLS | Common Voice 22.0 | Minds14 | Speech-MASSIVE-test | romanian_speech_synthesis_0_8_1 | echo |
+|-----------------|-----------|-----|-------------------|---------|---------------------|----------------------------------|------|
+| Italian (it)    | ✓         | ✓   | ✓                 | ✓       | ✕                   | ✕                                | ✕    |
+| English (en)    | ✓         | ✕   | ✓                 | ✓       | ✕                   | ✕                                | ✕    |
+| French (fr)     | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    |
+| German (de)     | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    |
+| Spanish (es)    | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    |
+| Dutch (nl)      | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    |
+| Portuguese (pt) | ✕         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    |
+| Bulgarian (bg)  | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Croatian (hr)   | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Czech (cs)      | ✓         | ✕   | ✓                 | ✓       | ✕                   | ✕                                | ✕    |
+| Danish (da)     | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Estonian (et)   | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Finnish (fi)    | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Greek (el)      | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Hungarian (hu)  | ✓         | ✕   | ✓                 | ✕       | ✓                   | ✕                                | ✕    |
+| Latvian (lv)    | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Lithuanian (lt) | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Maltese (mt)    | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Polish (pl)     | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    |
+| Romanian (ro)   | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✓                                | ✓    |
+| Slovak (sk)     | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Slovenian (sl)  | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Swedish (sv)    | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Russian (ru)    | ✕         | ✕   | ✓                 | ✓       | ✓                   | ✕                                | ✕    |
+| Ukrainian (uk)  | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    |
+| Arabic (ar)     | ✕         | ✕   | ✓                 | ✕       | ✓                   | ✕                                | ✕    |
+| Korean (ko)     | ✕         | ✕   | ✓                 | ✓       | ✓                   | ✕                                | ✕    |
+| Turkish (tr)    | ✕         | ✕   | ✓                 | ✓       | ✓                   | ✕                                | ✕    |
+| Vietnamese (vi) | ✕         | ✕   | ✓                 | ✕       | ✓                   | ✕                                | ✕    |
 
 ## Results
 We consider an AI model ✅ deployable on one given language if its performance is equal or better than the performance of our bs-transcription-1 model on italian.
+
+❓ = insufficient data available for testing
 
 ### parakeet-tdt-0.6b-v3
 1. ✅ Russian (ru)
@@ -48,9 +50,9 @@ We consider an AI model ✅ deployable on one given language if its performance 
 4. ✅ French (fr)
 5. ✅ Italian (it)
 6. ✅ Spanish (es)
-7. Ukrainian (uk)
+7. ❓ Ukrainian (uk)
 8. ✅ Polish (pl)
-9. Romanian (ro)
+9. ✅ Romanian (ro)
 10. ✅ Dutch (nl)
 11. Czech (cs)
 12. Greek (el)

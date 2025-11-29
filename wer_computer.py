@@ -9,7 +9,7 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-OUTPUT_PATH = "results/hu/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/sk/parakeet-tdt-0.6b-v3"
 
 #
 ##
@@ -58,7 +58,7 @@ dotenv.load_dotenv(".env.secrets")
 ################################ Voxpopuli #################################
 print("Testing Voxpopuli...")
 voxpopuli = datasets.load_dataset(
-    "facebook/voxpopuli", "hu", split="test", trust_remote_code=True
+    "facebook/voxpopuli", "sk", split="test", trust_remote_code=True
 )  # italian: 1177 samples (too often with incorrect labels)
 voxpopuli = voxpopuli.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 voxpopuli_wers_list, num_samples = computeWer(
@@ -101,7 +101,7 @@ output_stats["voxpopuli"] = {
 print("Testing CV-22.0...")
 cv_22_0 = datasets.load_dataset(
     "fsicoli/common_voice_22_0",
-    "hu",
+    "sk",
     split="test",
     trust_remote_code=True,
     token=True,
@@ -143,29 +143,29 @@ output_stats["cv_22_0"] = {
 #     "max": np.max(mind_14_wers_list),
 # }
 
-################################# Speech-MASSIVE-test #################################
-print("Testing Speech-MASSIVE-test...")
-speech_massive_test = datasets.load_dataset(
-    "FBK-MT/Speech-MASSIVE-test",
-    "hu-HU",
-    split="test",
-    trust_remote_code=True,
-)
-speech_massive_test = speech_massive_test.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-speech_massive_test_wers_list, num_samples = computeWer(
-    dataset=speech_massive_test,
-    text_column_name="utt",
-    inferenceFunction=INFERENCE_FUNCTION,
-)
-print(f"WER = {np.mean(speech_massive_test_wers_list)} [{num_samples} samples]")
-output_data["speech_massive_test"] = speech_massive_test_wers_list
-output_stats["speech_massive_test"] = {
-    "num_samples": num_samples,
-    "mean": np.mean(speech_massive_test_wers_list),
-    "std": np.std(speech_massive_test_wers_list),
-    "min": np.min(speech_massive_test_wers_list),
-    "max": np.max(speech_massive_test_wers_list),
-}
+# ################################# Speech-MASSIVE-test #################################
+# print("Testing Speech-MASSIVE-test...")
+# speech_massive_test = datasets.load_dataset(
+#     "FBK-MT/Speech-MASSIVE-test",
+#     "hu-HU",
+#     split="test",
+#     trust_remote_code=True,
+# )
+# speech_massive_test = speech_massive_test.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+# speech_massive_test_wers_list, num_samples = computeWer(
+#     dataset=speech_massive_test,
+#     text_column_name="utt",
+#     inferenceFunction=INFERENCE_FUNCTION,
+# )
+# print(f"WER = {np.mean(speech_massive_test_wers_list)} [{num_samples} samples]")
+# output_data["speech_massive_test"] = speech_massive_test_wers_list
+# output_stats["speech_massive_test"] = {
+#     "num_samples": num_samples,
+#     "mean": np.mean(speech_massive_test_wers_list),
+#     "std": np.std(speech_massive_test_wers_list),
+#     "min": np.min(speech_massive_test_wers_list),
+#     "max": np.max(speech_massive_test_wers_list),
+# }
 
 # ################################# Romanian speech synthesis 0.8.1 #################################
 # print("Testing Romanian speech synthesis 0.8.1...")
@@ -211,26 +211,26 @@ output_stats["speech_massive_test"] = {
 #     "max": np.max(echo_wers_list),
 # }
 
-# ################################# EuroSpeech #################################
-# print("Testing EuroSpeech...")
-# eurospeech = datasets.load_dataset(
-#     "disco-eth/EuroSpeech", "portugal", split="test", trust_remote_code=True
-# )
-# eurospeech = eurospeech.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-# eurospeech_wers_list, num_samples = computeWer(
-#     dataset=eurospeech,
-#     text_column_name="human_transcript",
-#     inferenceFunction=INFERENCE_FUNCTION,
-# )
-# print(f"WER = {np.mean(eurospeech_wers_list)} [{num_samples} samples]")
-# output_data["eurospeech"] = eurospeech_wers_list
-# output_stats["eurospeech"] = {
-#     "num_samples": num_samples,
-#     "mean": np.mean(eurospeech_wers_list),
-#     "std": np.std(eurospeech_wers_list),
-#     "min": np.min(eurospeech_wers_list),
-#     "max": np.max(eurospeech_wers_list),
-# }
+################################# EuroSpeech #################################
+print("Testing EuroSpeech...")
+eurospeech = datasets.load_dataset(
+    "disco-eth/EuroSpeech", "slovakia", split="test", trust_remote_code=True
+)
+eurospeech = eurospeech.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+eurospeech_wers_list, num_samples = computeWer(
+    dataset=eurospeech,
+    text_column_name="human_transcript",
+    inferenceFunction=INFERENCE_FUNCTION,
+)
+print(f"WER = {np.mean(eurospeech_wers_list)} [{num_samples} samples]")
+output_data["eurospeech"] = eurospeech_wers_list
+output_stats["eurospeech"] = {
+    "num_samples": num_samples,
+    "mean": np.mean(eurospeech_wers_list),
+    "std": np.std(eurospeech_wers_list),
+    "min": np.min(eurospeech_wers_list),
+    "max": np.max(eurospeech_wers_list),
+}
 
 #
 ##

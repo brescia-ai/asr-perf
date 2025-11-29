@@ -14,10 +14,10 @@ Assessing the performance of ASR systems.
 | German (de)     | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    | ✓          |
 | Spanish (es)    | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    | ✕          |
 | Dutch (nl)      | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    | ✕          |
-| Norwegian (no)  | ✕         | ✕   | ✕                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
+| Norwegian (no)  |           |     |                   |         |                     |                                  |      | ✓          |
 | Portuguese (pt) | ✕         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    | ✓          |
 | Bulgarian (bg)  | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
-| Bosnian (bs)    | ✕         | ✕   | ✕                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
+| Bosnian (bs)    |           |     |                   |         |                     |                                  |      | ✓          |
 | Croatian (hr)   | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
 | Czech (cs)      | ✓         | ✕   | ✓                 | ✓       | ✕                   | ✕                                | ✕    | ✕          |
 | Danish (da)     | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
@@ -25,13 +25,13 @@ Assessing the performance of ASR systems.
 | Finnish (fi)    | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
 | Greek (el)      | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
 | Hungarian (hu)  | ✓         | ✕   | ✓                 | ✕       | ✓                   | ✕                                | ✕    | ✕          |
-| Icelandic (is)  | ✕         | ✕   | ✕                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
+| Icelandic (is)  |           |     |                   |         |                     |                                  |      | ✓          |
 | Latvian (lv)    | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
 | Lithuanian (lt) | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
 | Maltese (mt)    | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
 | Polish (pl)     | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    | ✕          |
 | Romanian (ro)   | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✓                                | ✓    | ✕          |
-| Serbian (sr)    | ✕         | ✕   | ✕                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
+| Serbian (sr)    |           |     |                   |         |                     |                                  |      | ✓          |
 | Slovak (sk)     | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
 | Slovenian (sl)  | ✓         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
 | Swedish (sv)    | ✕         | ✕   | ✓                 | ✕       | ✕                   | ✕                                | ✕    | ✓          |
@@ -59,9 +59,9 @@ We consider an AI model ✅ deployable on one given language if its performance 
 9. ✅ Romanian (ro)
 10. ✅ Dutch (nl)
 11. ✅ Czech (cs)
-12. Greek (el)
-13. Swedish (sv)
-14. Portuguese (pt)
+12. ❓ Greek (el)
+13. ❓ Swedish (sv)
+14. ✅ Portuguese (pt)
 15. Hungarian (hu)
 16. Slovak (sk)
 17. Finnish (fi)

@@ -9,7 +9,7 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-OUTPUT_PATH = "results/pt/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/hu/parakeet-tdt-0.6b-v3"
 
 #
 ##
@@ -55,53 +55,53 @@ output_data = {}
 output_stats = {}
 dotenv.load_dotenv(".env.secrets")
 
-# ################################ Voxpopuli #################################
-# print("Testing Voxpopuli...")
-# voxpopuli = datasets.load_dataset(
-#     "facebook/voxpopuli", "cs", split="test", trust_remote_code=True
-# )  # italian: 1177 samples (too often with incorrect labels)
-# voxpopuli = voxpopuli.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-# voxpopuli_wers_list, num_samples = computeWer(
-#     dataset=voxpopuli,
-#     text_column_name="raw_text",
-#     inferenceFunction=INFERENCE_FUNCTION,
-# )
-# print(f"WER = {np.mean(voxpopuli_wers_list)} [{num_samples} samples]")
-# output_data["voxpopuli"] = voxpopuli_wers_list
-# output_stats["voxpopuli"] = {
-#     "num_samples": num_samples,
-#     "mean": np.mean(voxpopuli_wers_list),
-#     "std": np.std(voxpopuli_wers_list),
-#     "min": np.min(voxpopuli_wers_list),
-#     "max": np.max(voxpopuli_wers_list),
-# }
-
-################################ MLS #################################
-print("Testing MLS...")
-mls = datasets.load_dataset(
-    "facebook/multilingual_librispeech", "portuguese", split="test"
-)  # italian: 1260 samples
-mls = mls.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-mls_wers_list, num_samples = computeWer(
-    dataset=mls,
-    text_column_name="transcript",
+################################ Voxpopuli #################################
+print("Testing Voxpopuli...")
+voxpopuli = datasets.load_dataset(
+    "facebook/voxpopuli", "hu", split="test", trust_remote_code=True
+)  # italian: 1177 samples (too often with incorrect labels)
+voxpopuli = voxpopuli.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+voxpopuli_wers_list, num_samples = computeWer(
+    dataset=voxpopuli,
+    text_column_name="raw_text",
     inferenceFunction=INFERENCE_FUNCTION,
 )
-print(f"WER = {np.mean(mls_wers_list)} [{num_samples} samples]")
-output_data["mls"] = mls_wers_list
-output_stats["mls"] = {
+print(f"WER = {np.mean(voxpopuli_wers_list)} [{num_samples} samples]")
+output_data["voxpopuli"] = voxpopuli_wers_list
+output_stats["voxpopuli"] = {
     "num_samples": num_samples,
-    "mean": np.mean(mls_wers_list),
-    "std": np.std(mls_wers_list),
-    "min": np.min(mls_wers_list),
-    "max": np.max(mls_wers_list),
+    "mean": np.mean(voxpopuli_wers_list),
+    "std": np.std(voxpopuli_wers_list),
+    "min": np.min(voxpopuli_wers_list),
+    "max": np.max(voxpopuli_wers_list),
 }
+
+# ################################ MLS #################################
+# print("Testing MLS...")
+# mls = datasets.load_dataset(
+#     "facebook/multilingual_librispeech", "portuguese", split="test"
+# )  # italian: 1260 samples
+# mls = mls.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+# mls_wers_list, num_samples = computeWer(
+#     dataset=mls,
+#     text_column_name="transcript",
+#     inferenceFunction=INFERENCE_FUNCTION,
+# )
+# print(f"WER = {np.mean(mls_wers_list)} [{num_samples} samples]")
+# output_data["mls"] = mls_wers_list
+# output_stats["mls"] = {
+#     "num_samples": num_samples,
+#     "mean": np.mean(mls_wers_list),
+#     "std": np.std(mls_wers_list),
+#     "min": np.min(mls_wers_list),
+#     "max": np.max(mls_wers_list),
+# }
 
 ################################# Common Voice 22.0 #################################
 print("Testing CV-22.0...")
 cv_22_0 = datasets.load_dataset(
     "fsicoli/common_voice_22_0",
-    "pt",
+    "hu",
     split="test",
     trust_remote_code=True,
     token=True,
@@ -122,32 +122,32 @@ output_stats["cv_22_0"] = {
     "max": np.max(cv_22_0_wers_list),
 }
 
-################################# Minds14 #################################
-print("Testing Minds14...")
-mind_14 = datasets.load_dataset(
-    "PolyAI/minds14", "pt-PT", split="train", trust_remote_code=True
-)  # italian: (too often with incorrect labels)
-mind_14 = mind_14.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-mind_14_wers_list, num_samples = computeWer(
-    dataset=mind_14,
-    text_column_name="transcription",
-    inferenceFunction=INFERENCE_FUNCTION,
-)
-print(f"WER = {np.mean(mind_14_wers_list)} [{num_samples} samples]")
-output_data["mind_14"] = mind_14_wers_list
-output_stats["mind_14"] = {
-    "num_samples": num_samples,
-    "mean": np.mean(mind_14_wers_list),
-    "std": np.std(mind_14_wers_list),
-    "min": np.min(mind_14_wers_list),
-    "max": np.max(mind_14_wers_list),
-}
+# ################################# Minds14 #################################
+# print("Testing Minds14...")
+# mind_14 = datasets.load_dataset(
+#     "PolyAI/minds14", "pt-PT", split="train", trust_remote_code=True
+# )  # italian: (too often with incorrect labels)
+# mind_14 = mind_14.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+# mind_14_wers_list, num_samples = computeWer(
+#     dataset=mind_14,
+#     text_column_name="transcription",
+#     inferenceFunction=INFERENCE_FUNCTION,
+# )
+# print(f"WER = {np.mean(mind_14_wers_list)} [{num_samples} samples]")
+# output_data["mind_14"] = mind_14_wers_list
+# output_stats["mind_14"] = {
+#     "num_samples": num_samples,
+#     "mean": np.mean(mind_14_wers_list),
+#     "std": np.std(mind_14_wers_list),
+#     "min": np.min(mind_14_wers_list),
+#     "max": np.max(mind_14_wers_list),
+# }
 
 ################################# Speech-MASSIVE-test #################################
 print("Testing Speech-MASSIVE-test...")
 speech_massive_test = datasets.load_dataset(
     "FBK-MT/Speech-MASSIVE-test",
-    "pt-PT",
+    "hu-HU",
     split="test",
     trust_remote_code=True,
 )

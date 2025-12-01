@@ -43,9 +43,12 @@ Assessing the performance of ASR systems.
 | Vietnamese (vi) | ✕         | ✕   | ✓                 | ✕       | ✓                   | ✕                                | ✕    | ✕          | ✕        | ✕      | ✕         | ✓      |
 
 ## Results
-We consider an AI model ✅ deployable on one given language if its performance is equal or better than the performance of our bs-transcription-1 model on italian.
+We consider an AI model deployable on one given language if its performance is equal or better than the performance of our bs-transcription-1 model on italian.
 
-❓ = insufficient data available for testing
+**Legend**
+✅ = deployable
+❌ = not deployable
+❔ = insufficient data available for testing
 
 ### parakeet-tdt-0.6b-v3
 1. ✅ Russian (ru)
@@ -71,5 +74,5 @@ We consider an AI model ✅ deployable on one given language if its performance 
 21. Latvian (lv)
 22. Bulgarian (bg)
 23. Danish (da)
-24. Estonian (et)
+24. ❌ Estonian (et)
 25. Maltese (mt)

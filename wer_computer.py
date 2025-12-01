@@ -1,3 +1,10 @@
+"""
+https://huggingface.co/datasets/alexandrainst/ftspeech
+https://huggingface.co/datasets/alexandrainst/nst-da
+https://huggingface.co/datasets/MLRS/masri_dev
+https://huggingface.co/datasets/google/fleurs
+"""
+
 from utils import asr_client
 
 from transformers.models.whisper.english_normalizer import BasicTextNormalizer
@@ -9,7 +16,7 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-OUTPUT_PATH = "results/sk/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/et/parakeet-tdt-0.6b-v3"
 
 #
 ##
@@ -58,7 +65,7 @@ dotenv.load_dotenv(".env.secrets")
 ################################ Voxpopuli #################################
 print("Testing Voxpopuli...")
 voxpopuli = datasets.load_dataset(
-    "facebook/voxpopuli", "sk", split="test", trust_remote_code=True
+    "facebook/voxpopuli", "et", split="test", trust_remote_code=True
 )  # italian: 1177 samples (too often with incorrect labels)
 voxpopuli = voxpopuli.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 voxpopuli_wers_list, num_samples = computeWer(
@@ -101,7 +108,7 @@ output_stats["voxpopuli"] = {
 print("Testing CV-22.0...")
 cv_22_0 = datasets.load_dataset(
     "fsicoli/common_voice_22_0",
-    "sk",
+    "et",
     split="test",
     trust_remote_code=True,
     token=True,
@@ -214,7 +221,7 @@ output_stats["cv_22_0"] = {
 ################################# EuroSpeech #################################
 print("Testing EuroSpeech...")
 eurospeech = datasets.load_dataset(
-    "disco-eth/EuroSpeech", "slovakia", split="test", trust_remote_code=True
+    "disco-eth/EuroSpeech", "estonia", split="test", trust_remote_code=True
 )
 eurospeech = eurospeech.cast_column("audio", datasets.Audio(sampling_rate=16_000))
 eurospeech_wers_list, num_samples = computeWer(

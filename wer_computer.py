@@ -15,7 +15,7 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-OUTPUT_PATH = "results/uk/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/el/parakeet-tdt-0.6b-v3"
 
 #
 ##
@@ -51,6 +51,7 @@ def computeWer(dataset, text_column_name, inferenceFunction):
 def computeDataAndStats(dataset, text_column_name, inferenceFunction):
     dataset = dataset.cast_column("audio", datasets.Audio(sampling_rate=16_000))
     wers_list, cardinality = computeWer(dataset, text_column_name, inferenceFunction)
+    print(f"Mean WER = {np.mean(wers_list)} [{cardinality} samples]")
     stats = {
         "num_samples": cardinality,
         "mean": np.mean(wers_list),
@@ -128,7 +129,7 @@ if "cv_22_0" not in already_computed_datasets:
     print("Testing CV-22.0...")
     cv_22_0 = datasets.load_dataset(
         "fsicoli/common_voice_22_0",
-        "uk",
+        "el",
         split="test",
         trust_remote_code=True,
         token=True,
@@ -199,7 +200,7 @@ if "cv_22_0" not in already_computed_datasets:
 if "eurospeech" not in already_computed_datasets:
     print("Testing EuroSpeech...")
     eurospeech = datasets.load_dataset(
-        "disco-eth/EuroSpeech", "ukraine", split="test", trust_remote_code=True
+        "disco-eth/EuroSpeech", "greece", split="test", trust_remote_code=True
     )
     eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
     dataset=eurospeech,
@@ -212,7 +213,7 @@ if "eurospeech" not in already_computed_datasets:
 if "fleurs" not in already_computed_datasets:
     print("Testing Fleurs...")
     fleurs = datasets.load_dataset(
-        "google/fleurs", "uk_ua", split="test", trust_remote_code=True
+        "google/fleurs", "el_gr", split="test", trust_remote_code=True
     )
     fleurs_wers_list, fleurs_stats = computeDataAndStats(
         dataset=fleurs,

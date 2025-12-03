@@ -2,7 +2,6 @@
 https://huggingface.co/datasets/alexandrainst/ftspeech
 https://huggingface.co/datasets/alexandrainst/nst-da
 https://huggingface.co/datasets/MLRS/masri_dev
-https://huggingface.co/datasets/google/fleurs
 """
 
 from utils import asr_client
@@ -16,14 +15,13 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-OUTPUT_PATH = "results/et/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/uk/parakeet-tdt-0.6b-v3"
 
 #
 ##
 ###
 ##
 #
-
 
 def computeWer(dataset, text_column_name, inferenceFunction):
 
@@ -50,6 +48,39 @@ def computeWer(dataset, text_column_name, inferenceFunction):
 
     return wers_list, cardinality
 
+def computeDataAndStats(dataset, text_column_name, inferenceFunction):
+    dataset = dataset.cast_column("audio", datasets.Audio(sampling_rate=16_000))
+    wers_list, cardinality = computeWer(dataset, text_column_name, inferenceFunction)
+    stats = {
+        "num_samples": cardinality,
+        "mean": np.mean(wers_list),
+        "std": np.std(wers_list),
+        "min": np.min(wers_list),
+        "max": np.max(wers_list),
+    }
+    return wers_list, stats
+
+def saveOnDisk(data, stats):
+
+    # Raw data
+    try:
+        with open(os.path.join(OUTPUT_PATH, "data.json"), "r") as f:
+            output_data = json.load(f)
+    except FileNotFoundError:
+        output_data = {}
+    output_data.update(data)
+    with open(os.path.join(OUTPUT_PATH, "data.json"), "w") as f:
+        json.dump(output_data, f)
+    
+    # Stats
+    try:
+        with open(os.path.join(OUTPUT_PATH, "stats.json"), "r") as f:
+            output_stats = json.load(f)
+    except FileNotFoundError:
+        output_stats = {}
+    output_stats.update(stats)    
+    with open(os.path.join(OUTPUT_PATH, "stats.json"), "w") as f:
+        json.dump(output_stats, f)
 
 #
 ##
@@ -57,195 +88,135 @@ def computeWer(dataset, text_column_name, inferenceFunction):
 ##
 #
 
-os.makedirs(OUTPUT_PATH)
-output_data = {}
-output_stats = {}
+os.makedirs(OUTPUT_PATH, exist_ok=True)
+try:
+    with open(os.path.join(OUTPUT_PATH, "stats.json"), "r") as f:
+        output_stats = json.load(f)
+except FileNotFoundError:
+    output_stats = {}
+already_computed_datasets = output_stats.keys()
 dotenv.load_dotenv(".env.secrets")
 
-################################ Voxpopuli #################################
-print("Testing Voxpopuli...")
-voxpopuli = datasets.load_dataset(
-    "facebook/voxpopuli", "et", split="test", trust_remote_code=True
-)  # italian: 1177 samples (too often with incorrect labels)
-voxpopuli = voxpopuli.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-voxpopuli_wers_list, num_samples = computeWer(
-    dataset=voxpopuli,
-    text_column_name="raw_text",
-    inferenceFunction=INFERENCE_FUNCTION,
-)
-print(f"WER = {np.mean(voxpopuli_wers_list)} [{num_samples} samples]")
-output_data["voxpopuli"] = voxpopuli_wers_list
-output_stats["voxpopuli"] = {
-    "num_samples": num_samples,
-    "mean": np.mean(voxpopuli_wers_list),
-    "std": np.std(voxpopuli_wers_list),
-    "min": np.min(voxpopuli_wers_list),
-    "max": np.max(voxpopuli_wers_list),
-}
+# ################################ Voxpopuli #################################
+# if "voxpopuli" not in already_computed_datasets:
+#     print("Testing Voxpopuli...")
+#     voxpopuli = datasets.load_dataset(
+#         "facebook/voxpopuli", "et", split="test", trust_remote_code=True
+#     )  # italian: 1177 samples (too often with incorrect labels)
+#     voxpopuli_wers_list, voxpopuli_stats = computeDataAndStats(
+#         dataset=voxpopuli,
+#         text_column_name="raw_text",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#     )
+#     saveOnDisk(data={"voxpopuli": voxpopuli_wers_list}, stats={"voxpopuli": voxpopuli_stats})
 
 # ################################ MLS #################################
-# print("Testing MLS...")
-# mls = datasets.load_dataset(
-#     "facebook/multilingual_librispeech", "portuguese", split="test"
-# )  # italian: 1260 samples
-# mls = mls.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-# mls_wers_list, num_samples = computeWer(
-#     dataset=mls,
-#     text_column_name="transcript",
-#     inferenceFunction=INFERENCE_FUNCTION,
-# )
-# print(f"WER = {np.mean(mls_wers_list)} [{num_samples} samples]")
-# output_data["mls"] = mls_wers_list
-# output_stats["mls"] = {
-#     "num_samples": num_samples,
-#     "mean": np.mean(mls_wers_list),
-#     "std": np.std(mls_wers_list),
-#     "min": np.min(mls_wers_list),
-#     "max": np.max(mls_wers_list),
-# }
+# if "mls" not in already_computed_datasets:
+#     print("Testing MLS...")
+#     mls = datasets.load_dataset(
+#         "facebook/multilingual_librispeech", "portuguese", split="test"
+#     )  # italian: 1260 samples
+#     mls_wers_list, mls_stats = computeDataAndStats(
+#         dataset=mls,
+#         text_column_name="transcript",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#     )
+#     saveOnDisk(data={"mls": mls_wers_list}, stats={"mls": mls_stats})
 
 ################################# Common Voice 22.0 #################################
-print("Testing CV-22.0...")
-cv_22_0 = datasets.load_dataset(
-    "fsicoli/common_voice_22_0",
-    "et",
-    split="test",
-    trust_remote_code=True,
-    token=True,
-)
-cv_22_0 = cv_22_0.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-cv_22_0_wers_list, num_samples = computeWer(
-    dataset=cv_22_0,
-    text_column_name="sentence",
-    inferenceFunction=INFERENCE_FUNCTION,
-)
-print(f"WER = {np.mean(cv_22_0_wers_list)} [{num_samples} samples]")
-output_data["cv_22_0"] = cv_22_0_wers_list
-output_stats["cv_22_0"] = {
-    "num_samples": num_samples,
-    "mean": np.mean(cv_22_0_wers_list),
-    "std": np.std(cv_22_0_wers_list),
-    "min": np.min(cv_22_0_wers_list),
-    "max": np.max(cv_22_0_wers_list),
-}
+if "cv_22_0" not in already_computed_datasets:
+    print("Testing CV-22.0...")
+    cv_22_0 = datasets.load_dataset(
+        "fsicoli/common_voice_22_0",
+        "uk",
+        split="test",
+        trust_remote_code=True,
+        token=True,
+    )
+    cv_22_0_wers_list, cv_22_0_stats = computeDataAndStats(
+        dataset=cv_22_0,
+        text_column_name="sentence",
+        inferenceFunction=INFERENCE_FUNCTION,
+    )
+    saveOnDisk(data={"cv_22_0": cv_22_0_wers_list}, stats={"cv_22_0": cv_22_0_stats})
 
 # ################################# Minds14 #################################
-# print("Testing Minds14...")
-# mind_14 = datasets.load_dataset(
-#     "PolyAI/minds14", "pt-PT", split="train", trust_remote_code=True
-# )  # italian: (too often with incorrect labels)
-# mind_14 = mind_14.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-# mind_14_wers_list, num_samples = computeWer(
-#     dataset=mind_14,
-#     text_column_name="transcription",
-#     inferenceFunction=INFERENCE_FUNCTION,
-# )
-# print(f"WER = {np.mean(mind_14_wers_list)} [{num_samples} samples]")
-# output_data["mind_14"] = mind_14_wers_list
-# output_stats["mind_14"] = {
-#     "num_samples": num_samples,
-#     "mean": np.mean(mind_14_wers_list),
-#     "std": np.std(mind_14_wers_list),
-#     "min": np.min(mind_14_wers_list),
-#     "max": np.max(mind_14_wers_list),
-# }
+# if "mind_14" not in already_computed_datasets:
+#     print("Testing Minds14...")
+#     mind_14 = datasets.load_dataset(
+#         "PolyAI/minds14", "pt-PT", split="train", trust_remote_code=True
+#     )  # italian: (too often with incorrect labels)
+#     mind_14_wers_list, mind_14_stats = computeDataAndStats(
+#         dataset=mind_14,
+#         text_column_name="transcription",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#     )
+#     saveOnDisk(data={"mind_14": mind_14_wers_list}, stats={"mind_14": mind_14_stats})
 
 # ################################# Speech-MASSIVE-test #################################
-# print("Testing Speech-MASSIVE-test...")
-# speech_massive_test = datasets.load_dataset(
-#     "FBK-MT/Speech-MASSIVE-test",
-#     "hu-HU",
-#     split="test",
-#     trust_remote_code=True,
-# )
-# speech_massive_test = speech_massive_test.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-# speech_massive_test_wers_list, num_samples = computeWer(
-#     dataset=speech_massive_test,
-#     text_column_name="utt",
-#     inferenceFunction=INFERENCE_FUNCTION,
-# )
-# print(f"WER = {np.mean(speech_massive_test_wers_list)} [{num_samples} samples]")
-# output_data["speech_massive_test"] = speech_massive_test_wers_list
-# output_stats["speech_massive_test"] = {
-#     "num_samples": num_samples,
-#     "mean": np.mean(speech_massive_test_wers_list),
-#     "std": np.std(speech_massive_test_wers_list),
-#     "min": np.min(speech_massive_test_wers_list),
-#     "max": np.max(speech_massive_test_wers_list),
-# }
+# if "sm_test" not in already_computed_datasets:
+#     print("Testing Speech-MASSIVE-test...")
+#     sm_test = datasets.load_dataset(
+#         "FBK-MT/Speech-MASSIVE-test",
+#         "hu-HU",
+#         split="test",
+#         trust_remote_code=True,
+#     )
+#     sm_test_wers_list, sm_test_stats = computeDataAndStats(
+#         dataset=sm_test,
+#         text_column_name="utt",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#     )
+#     saveOnDisk(data={"sm_test": sm_test_wers_list}, stats={"sm_test": sm_test_stats})
 
 # ################################# Romanian speech synthesis 0.8.1 #################################
-# print("Testing Romanian speech synthesis 0.8.1...")
-# romanian_speech_synthesis_0_8_1 = datasets.load_dataset(
-#     "gigant/romanian_speech_synthesis_0_8_1", split="test", trust_remote_code=True
-# )
-# romanian_speech_synthesis_0_8_1 = romanian_speech_synthesis_0_8_1.cast_column(
-#     "audio", datasets.Audio(sampling_rate=16_000)
-# )
-# romanian_speech_synthesis_0_8_1_wers_list, num_samples = computeWer(
-#     dataset=romanian_speech_synthesis_0_8_1,
-#     text_column_name="sentence",
-#     inferenceFunction=INFERENCE_FUNCTION,
-# )
-# print(f"WER = {np.mean(romanian_speech_synthesis_0_8_1_wers_list)} [{num_samples} samples]")
-# output_data["romanian_speech_synthesis_0_8_1"] = romanian_speech_synthesis_0_8_1_wers_list
-# output_stats["romanian_speech_synthesis_0_8_1"] = {
-#     "num_samples": num_samples,
-#     "mean": np.mean(romanian_speech_synthesis_0_8_1_wers_list),
-#     "std": np.std(romanian_speech_synthesis_0_8_1_wers_list),
-#     "min": np.min(romanian_speech_synthesis_0_8_1_wers_list),
-#     "max": np.max(romanian_speech_synthesis_0_8_1_wers_list),
-# }
+# if "rss_0_8_1" not in already_computed_datasets:
+#     print("Testing Romanian speech synthesis 0.8.1...")
+#     rss_0_8_1 = datasets.load_dataset(
+#         "gigant/rss_0_8_1", split="test", trust_remote_code=True
+#     )
+#     rss_0_8_1_wers_list, rss_0_8_1_stats = computeDataAndStats(
+#         dataset=rss_0_8_1,
+#         text_column_name="sentence",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#     )
+#     saveOnDisk(data={"rss_0_8_1": rss_0_8_1_wers_list}, stats={"rss_0_8_1": rss_0_8_1_stats})
 
 # ################################# Echo #################################
-# print("Testing Echo...")
-# echo = datasets.load_dataset(
-#     "readerbench/echo", split="test", trust_remote_code=True
-# )
-# echo = echo.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-# echo_wers_list, num_samples = computeWer(
-#     dataset=echo,
-#     text_column_name="text",
-#     inferenceFunction=INFERENCE_FUNCTION,
-# )
-# print(f"WER = {np.mean(echo_wers_list)} [{num_samples} samples]")
-# output_data["echo"] = echo_wers_list
-# output_stats["echo"] = {
-#     "num_samples": num_samples,
-#     "mean": np.mean(echo_wers_list),
-#     "std": np.std(echo_wers_list),
-#     "min": np.min(echo_wers_list),
-#     "max": np.max(echo_wers_list),
-# }
+# if "echo" not in already_computed_datasets:
+#     print("Testing Echo...")
+#     echo = datasets.load_dataset(
+#         "readerbench/echo", split="test", trust_remote_code=True
+#     )
+#     echo_wers_list, echo_stats = computeDataAndStats(
+#         dataset=echo,
+#         text_column_name="text",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#     )
+#     saveOnDisk(data={"echo": echo_wers_list}, stats={"echo": echo_stats})
 
 ################################# EuroSpeech #################################
-print("Testing EuroSpeech...")
-eurospeech = datasets.load_dataset(
-    "disco-eth/EuroSpeech", "estonia", split="test", trust_remote_code=True
-)
-eurospeech = eurospeech.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-eurospeech_wers_list, num_samples = computeWer(
+if "eurospeech" not in already_computed_datasets:
+    print("Testing EuroSpeech...")
+    eurospeech = datasets.load_dataset(
+        "disco-eth/EuroSpeech", "ukraine", split="test", trust_remote_code=True
+    )
+    eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
     dataset=eurospeech,
     text_column_name="human_transcript",
     inferenceFunction=INFERENCE_FUNCTION,
-)
-print(f"WER = {np.mean(eurospeech_wers_list)} [{num_samples} samples]")
-output_data["eurospeech"] = eurospeech_wers_list
-output_stats["eurospeech"] = {
-    "num_samples": num_samples,
-    "mean": np.mean(eurospeech_wers_list),
-    "std": np.std(eurospeech_wers_list),
-    "min": np.min(eurospeech_wers_list),
-    "max": np.max(eurospeech_wers_list),
-}
+    )
+    saveOnDisk(data={"eurospeech": eurospeech_wers_list}, stats={"eurospeech": eurospeech_stats})
 
-#
-##
-### Save
-##
-#
-
-with open(f"{OUTPUT_PATH}/data.json", "w") as f:
-    json.dump(output_data, f)
-with open(f"{OUTPUT_PATH}/stats.json", "w") as f:
-    json.dump(output_stats, f)
+################################# Fleurs #################################
+if "fleurs" not in already_computed_datasets:
+    print("Testing Fleurs...")
+    fleurs = datasets.load_dataset(
+        "google/fleurs", "uk_ua", split="test", trust_remote_code=True
+    )
+    fleurs_wers_list, fleurs_stats = computeDataAndStats(
+        dataset=fleurs,
+        text_column_name="transcription",
+        inferenceFunction=INFERENCE_FUNCTION,
+    )
+    saveOnDisk(data={"fleurs": fleurs_wers_list}, stats={"fleurs": fleurs_stats})

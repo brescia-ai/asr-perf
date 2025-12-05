@@ -15,7 +15,7 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-OUTPUT_PATH = "results/lt/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/sl/parakeet-tdt-0.6b-v3"
 
 #
 ##
@@ -102,7 +102,7 @@ dotenv.load_dotenv(".env.secrets")
 if "voxpopuli" not in already_computed_datasets:
     print("Testing Voxpopuli...")
     voxpopuli = datasets.load_dataset(
-        "facebook/voxpopuli", "lt", split="test", trust_remote_code=True
+        "facebook/voxpopuli", "sl", split="test", trust_remote_code=True
     )  # italian: 1177 samples (too often with incorrect labels)
     voxpopuli_wers_list, voxpopuli_stats = computeDataAndStats(
         dataset=voxpopuli,
@@ -129,7 +129,7 @@ if "cv_22_0" not in already_computed_datasets:
     print("Testing CV-22.0...")
     cv_22_0 = datasets.load_dataset(
         "fsicoli/common_voice_22_0",
-        "lt",
+        "sl",
         split="test",
         trust_remote_code=True,
         token=True,
@@ -200,7 +200,7 @@ if "cv_22_0" not in already_computed_datasets:
 if "eurospeech" not in already_computed_datasets:
     print("Testing EuroSpeech...")
     eurospeech = datasets.load_dataset(
-        "disco-eth/EuroSpeech", "lithuania", split="test", trust_remote_code=True
+        "disco-eth/EuroSpeech", "slovenia", split="test", trust_remote_code=True
     )
     eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
     dataset=eurospeech,
@@ -213,7 +213,7 @@ if "eurospeech" not in already_computed_datasets:
 if "fleurs" not in already_computed_datasets:
     print("Testing Fleurs...")
     fleurs = datasets.load_dataset(
-        "google/fleurs", "lt_lt", split="test", trust_remote_code=True
+        "google/fleurs", "sl_si", split="test", trust_remote_code=True
     )
     fleurs_wers_list, fleurs_stats = computeDataAndStats(
         dataset=fleurs,

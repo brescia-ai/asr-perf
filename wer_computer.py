@@ -15,7 +15,7 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-OUTPUT_PATH = "results/sl/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/lv/parakeet-tdt-0.6b-v3"
 
 #
 ##
@@ -98,18 +98,18 @@ except FileNotFoundError:
 already_computed_datasets = output_stats.keys()
 dotenv.load_dotenv(".env.secrets")
 
-################################ Voxpopuli #################################
-if "voxpopuli" not in already_computed_datasets:
-    print("Testing Voxpopuli...")
-    voxpopuli = datasets.load_dataset(
-        "facebook/voxpopuli", "sl", split="test", trust_remote_code=True
-    )  # italian: 1177 samples (too often with incorrect labels)
-    voxpopuli_wers_list, voxpopuli_stats = computeDataAndStats(
-        dataset=voxpopuli,
-        text_column_name="raw_text",
-        inferenceFunction=INFERENCE_FUNCTION,
-    )
-    saveOnDisk(data={"voxpopuli": voxpopuli_wers_list}, stats={"voxpopuli": voxpopuli_stats})
+# ################################ Voxpopuli #################################
+# if "voxpopuli" not in already_computed_datasets:
+#     print("Testing Voxpopuli...")
+#     voxpopuli = datasets.load_dataset(
+#         "facebook/voxpopuli", "sl", split="test", trust_remote_code=True
+#     )  # italian: 1177 samples (too often with incorrect labels)
+#     voxpopuli_wers_list, voxpopuli_stats = computeDataAndStats(
+#         dataset=voxpopuli,
+#         text_column_name="raw_text",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#     )
+#     saveOnDisk(data={"voxpopuli": voxpopuli_wers_list}, stats={"voxpopuli": voxpopuli_stats})
 
 # ################################ MLS #################################
 # if "mls" not in already_computed_datasets:
@@ -129,7 +129,7 @@ if "cv_22_0" not in already_computed_datasets:
     print("Testing CV-22.0...")
     cv_22_0 = datasets.load_dataset(
         "fsicoli/common_voice_22_0",
-        "sl",
+        "lv",
         split="test",
         trust_remote_code=True,
         token=True,
@@ -200,7 +200,7 @@ if "cv_22_0" not in already_computed_datasets:
 if "eurospeech" not in already_computed_datasets:
     print("Testing EuroSpeech...")
     eurospeech = datasets.load_dataset(
-        "disco-eth/EuroSpeech", "slovenia", split="test", trust_remote_code=True
+        "disco-eth/EuroSpeech", "latvia", split="test", trust_remote_code=True
     )
     eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
     dataset=eurospeech,
@@ -213,7 +213,7 @@ if "eurospeech" not in already_computed_datasets:
 if "fleurs" not in already_computed_datasets:
     print("Testing Fleurs...")
     fleurs = datasets.load_dataset(
-        "google/fleurs", "sl_si", split="test", trust_remote_code=True
+        "google/fleurs", "lv_lv", split="test", trust_remote_code=True
     )
     fleurs_wers_list, fleurs_stats = computeDataAndStats(
         dataset=fleurs,

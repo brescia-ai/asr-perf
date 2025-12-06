@@ -71,7 +71,7 @@ We consider an AI model deployable on one given language if its performance is e
 18. ❌ Croatian (hr)
 19. ❌ Lithuanian (lt)
 20. ❌ Slovenian (sl)
-21. Latvian (lv)
+21. ❌ Latvian (lv)
 22. Bulgarian (bg)
 23. Danish (da)
 24. ❌ Estonian (et)

@@ -15,7 +15,7 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-OUTPUT_PATH = "results/lv/parakeet-tdt-0.6b-v3"
+OUTPUT_PATH = "results/bg/parakeet-tdt-0.6b-v3"
 
 #
 ##
@@ -129,7 +129,7 @@ if "cv_22_0" not in already_computed_datasets:
     print("Testing CV-22.0...")
     cv_22_0 = datasets.load_dataset(
         "fsicoli/common_voice_22_0",
-        "lv",
+        "bg",
         split="test",
         trust_remote_code=True,
         token=True,
@@ -200,7 +200,7 @@ if "cv_22_0" not in already_computed_datasets:
 if "eurospeech" not in already_computed_datasets:
     print("Testing EuroSpeech...")
     eurospeech = datasets.load_dataset(
-        "disco-eth/EuroSpeech", "latvia", split="test", trust_remote_code=True
+        "disco-eth/EuroSpeech", "bulgaria", split="test", trust_remote_code=True
     )
     eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
     dataset=eurospeech,
@@ -213,7 +213,7 @@ if "eurospeech" not in already_computed_datasets:
 if "fleurs" not in already_computed_datasets:
     print("Testing Fleurs...")
     fleurs = datasets.load_dataset(
-        "google/fleurs", "lv_lv", split="test", trust_remote_code=True
+        "google/fleurs", "bg_bg", split="test", trust_remote_code=True
     )
     fleurs_wers_list, fleurs_stats = computeDataAndStats(
         dataset=fleurs,

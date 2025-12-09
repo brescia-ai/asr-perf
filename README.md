@@ -48,7 +48,6 @@ We consider an AI model deployable on one given language if its performance is e
 **Legend**
 ✅ = deployable
 ❌ = not deployable
-❔ = insufficient data available for testing
 
 ### parakeet-tdt-0.6b-v3
 1. ✅ Russian (ru)

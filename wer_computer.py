@@ -1,7 +1,3 @@
-"""
-https://huggingface.co/datasets/MLRS/masri_dev
-"""
-
 from utils import asr_client
 
 from transformers.models.whisper.english_normalizer import BasicTextNormalizer

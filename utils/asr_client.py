@@ -11,7 +11,7 @@ ASR_SERVER_ENDPOINT = "http://fulmine:8001/transcribe"
 ##
 #
 
-def inferenceFunction(audio_input: dict[str, np.ndarray | int]) -> str:
+def inferenceFunction(audio_input: dict[str, np.ndarray | int], language: str) -> str:
     """
     Sends a numpy array containing audio data to the ASR server and returns the transcription.
 
@@ -31,19 +31,28 @@ def inferenceFunction(audio_input: dict[str, np.ndarray | int]) -> str:
 
     try:
         # Create an in-memory bytes buffer
-        buffer = io.BytesIO()
+        wav_buffer = io.BytesIO()
 
         # The server expects 16kHz mono. Let's assume the input is already mono.
         # The data needs to be in a suitable format for WAV, e.g., int16
         if waveform.dtype in [np.float32, np.float64]:
             waveform = (waveform * 32767).astype(np.int16)
 
-        wavfile.write(buffer, sampling_rate, waveform)
-        buffer.seek(0)
+        wavfile.write(wav_buffer, sampling_rate, waveform)
+        wav_buffer.seek(0)
 
-        # Send the POST request with the file
-        files = {"file": ("audio.wav", buffer, "audio/wav")}
-        response = requests.post(ASR_SERVER_ENDPOINT, files=files)
+        # Send the POST request
+        headers = {
+            "accept": "application/json",
+        }
+        files = {"file": wav_buffer}
+        data = {"transcription_language": language}
+        response = requests.post(
+            ASR_SERVER_ENDPOINT,
+            headers=headers,
+            files=files,
+            data=data,
+        )
 
         # Raise an exception for HTTP errors (e.g., 404, 500)
         response.raise_for_status()

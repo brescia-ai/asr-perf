@@ -49,7 +49,7 @@ We consider an AI model deployable on one given language if its performance is e
 ✅ = deployable
 ❌ = not deployable
 
-### parakeet-tdt-0.6b-v3
+### nvidia/parakeet-tdt-0.6b-v3
 1. ✅ Russian (ru)
 2. ✅ German (de)
 3. ✅ English (en)
@@ -75,3 +75,30 @@ We consider an AI model deployable on one given language if its performance is e
 23. ❌ Danish (da)
 24. ❌ Estonian (et)
 25. ❌ Maltese (mt)
+
+### nvidia/canary-1b-v2
+1. Russian (ru)
+2. German (de)
+3. English (en)
+4. French (fr)
+5. ✅ Italian (it)
+6. Spanish (es)
+7. Ukrainian (uk)
+8. Polish (pl)
+9. Romanian (ro)
+10. Dutch (nl)
+11. Czech (cs)
+12. Greek (el)
+13. Swedish (sv)
+14. Portuguese (pt)
+15. Hungarian (hu)
+16. Slovak (sk)
+17. Finnish (fi)
+18. Croatian (hr)
+19. Lithuanian (lt)
+20. Slovenian (sl)
+21. Latvian (lv)
+22. Bulgarian (bg)
+23. Danish (da)
+24. Estonian (et)
+25. Maltese (mt)

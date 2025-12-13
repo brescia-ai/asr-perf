@@ -9,7 +9,8 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-OUTPUT_PATH = "results/mt/parakeet-tdt-0.6b-v3"
+LANGUAGE = "Italian"
+OUTPUT_PATH = "results/it/canary-1b-v2"
 
 #
 ##
@@ -17,12 +18,12 @@ OUTPUT_PATH = "results/mt/parakeet-tdt-0.6b-v3"
 ##
 #
 
-def computeWer(dataset, text_column_name, inferenceFunction):
+def computeWer(dataset, text_column_name, inferenceFunction, language):
 
     normalizer = BasicTextNormalizer()
     wer_metric = evaluate.load("wer")
 
-    predictions_list = [inferenceFunction(sample["audio"]) for sample in dataset]
+    predictions_list = [inferenceFunction(sample["audio"], language) for sample in dataset]
     references_list = dataset[text_column_name]
 
     norm_references_list = [normalizer(reference) for reference in references_list]
@@ -42,9 +43,9 @@ def computeWer(dataset, text_column_name, inferenceFunction):
 
     return wers_list, cardinality
 
-def computeDataAndStats(dataset, text_column_name, inferenceFunction):
+def computeDataAndStats(dataset, text_column_name, inferenceFunction, language):
     dataset = dataset.cast_column("audio", datasets.Audio(sampling_rate=16_000))
-    wers_list, cardinality = computeWer(dataset, text_column_name, inferenceFunction)
+    wers_list, cardinality = computeWer(dataset, text_column_name, inferenceFunction, language)
     print(f"Mean WER = {np.mean(wers_list)} [{cardinality} samples]")
     stats = {
         "num_samples": cardinality,
@@ -92,38 +93,40 @@ except FileNotFoundError:
 already_computed_datasets = output_stats.keys()
 dotenv.load_dotenv(".env.secrets")
 
-# ################################ Voxpopuli #################################
-# if "voxpopuli" not in already_computed_datasets:
-#     print("Testing Voxpopuli...")
-#     voxpopuli = datasets.load_dataset(
-#         "facebook/voxpopuli", "sl", split="test", trust_remote_code=True
-#     )  # italian: 1177 samples (too often with incorrect labels)
-#     voxpopuli_wers_list, voxpopuli_stats = computeDataAndStats(
-#         dataset=voxpopuli,
-#         text_column_name="raw_text",
-#         inferenceFunction=INFERENCE_FUNCTION,
-#     )
-#     saveOnDisk(data={"voxpopuli": voxpopuli_wers_list}, stats={"voxpopuli": voxpopuli_stats})
+################################ Voxpopuli #################################
+if "voxpopuli" not in already_computed_datasets:
+    print("Testing Voxpopuli...")
+    voxpopuli = datasets.load_dataset(
+        "facebook/voxpopuli", "it", split="test", trust_remote_code=True,
+    )  # italian: 1177 samples (too often with incorrect labels)
+    voxpopuli_wers_list, voxpopuli_stats = computeDataAndStats(
+        dataset=voxpopuli,
+        text_column_name="raw_text",
+        inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
+    )
+    saveOnDisk(data={"voxpopuli": voxpopuli_wers_list}, stats={"voxpopuli": voxpopuli_stats})
 
-# ################################ MLS #################################
-# if "mls" not in already_computed_datasets:
-#     print("Testing MLS...")
-#     mls = datasets.load_dataset(
-#         "facebook/multilingual_librispeech", "portuguese", split="test"
-#     )  # italian: 1260 samples
-#     mls_wers_list, mls_stats = computeDataAndStats(
-#         dataset=mls,
-#         text_column_name="transcript",
-#         inferenceFunction=INFERENCE_FUNCTION,
-#     )
-#     saveOnDisk(data={"mls": mls_wers_list}, stats={"mls": mls_stats})
+################################ MLS #################################
+if "mls" not in already_computed_datasets:
+    print("Testing MLS...")
+    mls = datasets.load_dataset(
+        "facebook/multilingual_librispeech", "italian", split="test"
+    )  # italian: 1260 samples
+    mls_wers_list, mls_stats = computeDataAndStats(
+        dataset=mls,
+        text_column_name="transcript",
+        inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
+    )
+    saveOnDisk(data={"mls": mls_wers_list}, stats={"mls": mls_stats})
 
 ################################ Common Voice 22.0 #################################
 if "cv_22_0" not in already_computed_datasets:
     print("Testing CV-22.0...")
     cv_22_0 = datasets.load_dataset(
         "fsicoli/common_voice_22_0",
-        "da",
+        "it",
         split="test",
         trust_remote_code=True,
         token=True,
@@ -132,21 +135,23 @@ if "cv_22_0" not in already_computed_datasets:
         dataset=cv_22_0,
         text_column_name="sentence",
         inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
     )
     saveOnDisk(data={"cv_22_0": cv_22_0_wers_list}, stats={"cv_22_0": cv_22_0_stats})
 
-# ################################# Minds14 #################################
-# if "mind_14" not in already_computed_datasets:
-#     print("Testing Minds14...")
-#     mind_14 = datasets.load_dataset(
-#         "PolyAI/minds14", "pt-PT", split="train", trust_remote_code=True
-#     )  # italian: (too often with incorrect labels)
-#     mind_14_wers_list, mind_14_stats = computeDataAndStats(
-#         dataset=mind_14,
-#         text_column_name="transcription",
-#         inferenceFunction=INFERENCE_FUNCTION,
-#     )
-#     saveOnDisk(data={"mind_14": mind_14_wers_list}, stats={"mind_14": mind_14_stats})
+################################# Minds14 #################################
+if "mind_14" not in already_computed_datasets:
+    print("Testing Minds14...")
+    mind_14 = datasets.load_dataset(
+        "PolyAI/minds14", "it-IT", split="train", trust_remote_code=True
+    )  # italian: (too often with incorrect labels)
+    mind_14_wers_list, mind_14_stats = computeDataAndStats(
+        dataset=mind_14,
+        text_column_name="transcription",
+        inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
+    )
+    saveOnDisk(data={"mind_14": mind_14_wers_list}, stats={"mind_14": mind_14_stats})
 
 # ################################# Speech-MASSIVE-test #################################
 # if "sm_test" not in already_computed_datasets:
@@ -161,6 +166,7 @@ if "cv_22_0" not in already_computed_datasets:
 #         dataset=sm_test,
 #         text_column_name="utt",
 #         inferenceFunction=INFERENCE_FUNCTION,
+#         language=LANGUAGE,
 #     )
 #     saveOnDisk(data={"sm_test": sm_test_wers_list}, stats={"sm_test": sm_test_stats})
 
@@ -174,6 +180,7 @@ if "cv_22_0" not in already_computed_datasets:
 #         dataset=rss_0_8_1,
 #         text_column_name="sentence",
 #         inferenceFunction=INFERENCE_FUNCTION,
+#         language=LANGUAGE,
 #     )
 #     saveOnDisk(data={"rss_0_8_1": rss_0_8_1_wers_list}, stats={"rss_0_8_1": rss_0_8_1_stats})
 
@@ -187,6 +194,7 @@ if "cv_22_0" not in already_computed_datasets:
 #         dataset=echo,
 #         text_column_name="text",
 #         inferenceFunction=INFERENCE_FUNCTION,
+#         language=LANGUAGE,
 #     )
 #     saveOnDisk(data={"echo": echo_wers_list}, stats={"echo": echo_stats})
 
@@ -194,12 +202,17 @@ if "cv_22_0" not in already_computed_datasets:
 if "eurospeech" not in already_computed_datasets:
     print("Testing EuroSpeech...")
     eurospeech = datasets.load_dataset(
-        "disco-eth/EuroSpeech", "denmark", split="test", trust_remote_code=True
+        "disco-eth/EuroSpeech",
+        "italy",
+        # split="test",
+        split="validation", # for italian
+        trust_remote_code=True,
     )
     eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
-    dataset=eurospeech,
-    text_column_name="human_transcript",
-    inferenceFunction=INFERENCE_FUNCTION,
+        dataset=eurospeech,
+        text_column_name="human_transcript",
+        inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
     )
     saveOnDisk(data={"eurospeech": eurospeech_wers_list}, stats={"eurospeech": eurospeech_stats})
 
@@ -207,12 +220,13 @@ if "eurospeech" not in already_computed_datasets:
 if "fleurs" not in already_computed_datasets:
     print("Testing Fleurs...")
     fleurs = datasets.load_dataset(
-        "google/fleurs", "da_dk", split="test", trust_remote_code=True
+        "google/fleurs", "it_it", split="test", trust_remote_code=True
     )
     fleurs_wers_list, fleurs_stats = computeDataAndStats(
         dataset=fleurs,
         text_column_name="transcription",
         inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
     )
     saveOnDisk(data={"fleurs": fleurs_wers_list}, stats={"fleurs": fleurs_stats})
 
@@ -226,6 +240,7 @@ if "fleurs" not in already_computed_datasets:
 #         dataset=ftspeech,
 #         text_column_name="sentence",
 #         inferenceFunction=INFERENCE_FUNCTION,
+#         language=LANGUAGE,
 #     )
 #     saveOnDisk(data={"ftspeech": ftspeech_wers_list}, stats={"ftspeech": ftspeech_stats})
 
@@ -239,18 +254,20 @@ if "fleurs" not in already_computed_datasets:
 #         dataset=nst_da,
 #         text_column_name="text",
 #         inferenceFunction=INFERENCE_FUNCTION,
+#         language=LANGUAGE,
 #     )
 #     saveOnDisk(data={"nst_da": nst_da_wers_list}, stats={"nst_da": nst_da_stats})
 
-################################# masri_dev (maltese only) #################################
-if "masri_dev" not in already_computed_datasets:
-    print("Testing masri_dev...")
-    masri_dev = datasets.load_dataset(
-        "MLRS/masri_dev", split="validation"
-    )
-    masri_dev_wers_list, masri_dev_stats = computeDataAndStats(
-        dataset=masri_dev,
-        text_column_name="normalized_text",
-        inferenceFunction=INFERENCE_FUNCTION,
-    )
-    saveOnDisk(data={"masri_dev": masri_dev_wers_list}, stats={"masri_dev": masri_dev_stats})
+# ################################# masri_dev (maltese only) #################################
+# if "masri_dev" not in already_computed_datasets:
+#     print("Testing masri_dev...")
+#     masri_dev = datasets.load_dataset(
+#         "MLRS/masri_dev", split="validation"
+#     )
+#     masri_dev_wers_list, masri_dev_stats = computeDataAndStats(
+#         dataset=masri_dev,
+#         text_column_name="normalized_text",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#         language=LANGUAGE,
+#     )
+#     saveOnDisk(data={"masri_dev": masri_dev_wers_list}, stats={"masri_dev": masri_dev_stats})

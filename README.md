@@ -9,7 +9,7 @@ Assessing the performance of ASR systems.
 | Language        | Voxpopuli | MLS | Common Voice 22.0 | Minds14 | Speech-MASSIVE-test | romanian_speech_synthesis_0_8_1 | echo | EuroSpeech | ftspeech | nst-da  | masri_dev | fleurs |
 |-----------------|-----------|-----|-------------------|---------|---------------------|----------------------------------|------|------------|----------|--------|-----------|--------|
 | Italian (it)    | ✓         | ✓   | ✓                 | ✓       | ✕                   | ✕                                | ✕    | ✓          | ✕        | ✕      | ✕         | ✓      |
-| English (en)    | ✓         | ✕   | ✓                 | ✓       | ✕                   | ✕                                | ✕    | ✓          | ✕        | ✕      | ✕         | ✓      |
+| English (en)    | ✓         | ✕   | ✓                 | ✓       | ✕                   | ✕                                | ✕    | ✕          | ✕        | ✕      | ✕         | ✓      |
 | French (fr)     | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    | ✓          | ✕        | ✕      | ✕         | ✓      |
 | German (de)     | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    | ✓          | ✕        | ✕      | ✕         | ✓      |
 | Spanish (es)    | ✓         | ✓   | ✓                 | ✓       | ✓                   | ✕                                | ✕    | ✕          | ✕        | ✕      | ✕         | ✓      |

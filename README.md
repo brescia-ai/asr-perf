@@ -78,7 +78,7 @@ We consider an AI model deployable on one given language if its performance is e
 
 ### nvidia/canary-1b-v2
 1. ❌ Russian (ru)
-2. German (de)
+2. ✅ German (de)
 3. English (en)
 4. French (fr)
 5. ✅ Italian (it)

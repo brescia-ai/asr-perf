@@ -82,7 +82,7 @@ We consider an AI model deployable on one given language if its performance is e
 3. ✅ English (en)
 4. ✅ French (fr)
 5. ✅ Italian (it)
-6. Spanish (es)
+6. ✅ Spanish (es)
 7. Ukrainian (uk)
 8. Polish (pl)
 9. Romanian (ro)

@@ -9,8 +9,8 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-LANGUAGE = "French"
-OUTPUT_PATH = "results/fr/canary-1b-v2"
+LANGUAGE = "Spanish"
+OUTPUT_PATH = "results/es/canary-1b-v2"
 
 #
 ##
@@ -97,7 +97,7 @@ dotenv.load_dotenv(".env.secrets")
 if "voxpopuli" not in already_computed_datasets:
     print("Testing Voxpopuli...")
     voxpopuli = datasets.load_dataset(
-        "facebook/voxpopuli", "fr", split="test", trust_remote_code=True,
+        "facebook/voxpopuli", "es", split="test", trust_remote_code=True,
     )  # italian: 1177 samples (too often with incorrect labels)
     voxpopuli_wers_list, voxpopuli_stats = computeDataAndStats(
         dataset=voxpopuli,
@@ -111,7 +111,7 @@ if "voxpopuli" not in already_computed_datasets:
 if "mls" not in already_computed_datasets:
     print("Testing MLS...")
     mls = datasets.load_dataset(
-        "facebook/multilingual_librispeech", "french", split="test"
+        "facebook/multilingual_librispeech", "spanish", split="test"
     )  # italian: 1260 samples
     mls_wers_list, mls_stats = computeDataAndStats(
         dataset=mls,
@@ -126,7 +126,7 @@ if "cv_22_0" not in already_computed_datasets:
     print("Testing CV-22.0...")
     cv_22_0 = datasets.load_dataset(
         "fsicoli/common_voice_22_0",
-        "fr",
+        "es",
         split="test",
         trust_remote_code=True,
         token=True,
@@ -143,7 +143,7 @@ if "cv_22_0" not in already_computed_datasets:
 if "mind_14" not in already_computed_datasets:
     print("Testing Minds14...")
     mind_14 = datasets.load_dataset(
-        "PolyAI/minds14", "fr-FR", split="train", trust_remote_code=True
+        "PolyAI/minds14", "es-ES", split="train", trust_remote_code=True
     )  # italian: (too often with incorrect labels)
     mind_14_wers_list, mind_14_stats = computeDataAndStats(
         dataset=mind_14,
@@ -158,7 +158,7 @@ if "sm_test" not in already_computed_datasets:
     print("Testing Speech-MASSIVE-test...")
     sm_test = datasets.load_dataset(
         "FBK-MT/Speech-MASSIVE-test",
-        "fr-FR",
+        "es-ES",
         split="test",
         trust_remote_code=True,
     )
@@ -198,29 +198,29 @@ if "sm_test" not in already_computed_datasets:
 #     )
 #     saveOnDisk(data={"echo": echo_wers_list}, stats={"echo": echo_stats})
 
-# ################################# EuroSpeech #################################
-if "eurospeech" not in already_computed_datasets:
-    print("Testing EuroSpeech...")
-    eurospeech = datasets.load_dataset(
-        "disco-eth/EuroSpeech",
-        "france",
-        split="test",
-        # split="validation", # for italian
-        trust_remote_code=True,
-    )
-    eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
-        dataset=eurospeech,
-        text_column_name="human_transcript",
-        inferenceFunction=INFERENCE_FUNCTION,
-        language=LANGUAGE,
-    )
-    saveOnDisk(data={"eurospeech": eurospeech_wers_list}, stats={"eurospeech": eurospeech_stats})
+# # ################################# EuroSpeech #################################
+# if "eurospeech" not in already_computed_datasets:
+#     print("Testing EuroSpeech...")
+#     eurospeech = datasets.load_dataset(
+#         "disco-eth/EuroSpeech",
+#         "france",
+#         split="test",
+#         # split="validation", # for italian
+#         trust_remote_code=True,
+#     )
+#     eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
+#         dataset=eurospeech,
+#         text_column_name="human_transcript",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#         language=LANGUAGE,
+#     )
+#     saveOnDisk(data={"eurospeech": eurospeech_wers_list}, stats={"eurospeech": eurospeech_stats})
 
 ################################# Fleurs #################################
 if "fleurs" not in already_computed_datasets:
     print("Testing Fleurs...")
     fleurs = datasets.load_dataset(
-        "google/fleurs", "fr_fr", split="test", trust_remote_code=True
+        "google/fleurs", "es_419", split="test", trust_remote_code=True
     )
     fleurs_wers_list, fleurs_stats = computeDataAndStats(
         dataset=fleurs,

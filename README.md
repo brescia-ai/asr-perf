@@ -6,7 +6,7 @@ Assessing the performance of ASR systems.
 ✓ = dataset available for this language
 ✕ = dataset not available for this language
 
-| Language        | Voxpopuli | MLS | Common Voice 22.0 | Minds14 | Speech-MASSIVE-test | romanian_speech_synthesis_0_8_1 | echo | EuroSpeech | ftspeech | nst-da  | masri_dev | fleurs |
+| Language        | Voxpopuli | MLS | Common Voice 22.0 | Minds14 | Speech-MASSIVE-test | romanian_speech_synthesis_0_8_1  | echo | EuroSpeech | ftspeech | nst-da | masri_dev | fleurs |
 |-----------------|-----------|-----|-------------------|---------|---------------------|----------------------------------|------|------------|----------|--------|-----------|--------|
 | Italian (it)    | ✓         | ✓   | ✓                 | ✓       | ✕                   | ✕                                | ✕    | ✓          | ✕        | ✕      | ✕         | ✓      |
 | English (en)    | ✓         | ✕   | ✓                 | ✓       | ✕                   | ✕                                | ✕    | ✕          | ✕        | ✕      | ✕         | ✓      |
@@ -85,7 +85,7 @@ We consider an AI model deployable on one given language if its performance is e
 6. ✅ Spanish (es)
 7. ❌ Ukrainian (uk)
 8. ✅ Polish (pl)
-9. Romanian (ro)
+9. ✅ Romanian (ro)
 10. Dutch (nl)
 11. Czech (cs)
 12. Greek (el)

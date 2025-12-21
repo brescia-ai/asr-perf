@@ -9,8 +9,8 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-LANGUAGE = "Czech"
-OUTPUT_PATH = "results/cs/canary-1b-v2"
+LANGUAGE = "Greek"
+OUTPUT_PATH = "results/el/canary-1b-v2"
 
 #
 ##
@@ -93,19 +93,19 @@ except FileNotFoundError:
 already_computed_datasets = output_stats.keys()
 dotenv.load_dotenv(".env.secrets")
 
-################################ Voxpopuli #################################
-if "voxpopuli" not in already_computed_datasets:
-    print("Testing Voxpopuli...")
-    voxpopuli = datasets.load_dataset(
-        "facebook/voxpopuli", "cs", split="test", trust_remote_code=True,
-    )  # italian: 1177 samples (too often with incorrect labels)
-    voxpopuli_wers_list, voxpopuli_stats = computeDataAndStats(
-        dataset=voxpopuli,
-        text_column_name="raw_text",
-        inferenceFunction=INFERENCE_FUNCTION,
-        language=LANGUAGE,
-    )
-    saveOnDisk(data={"voxpopuli": voxpopuli_wers_list}, stats={"voxpopuli": voxpopuli_stats})
+# ################################ Voxpopuli #################################
+# if "voxpopuli" not in already_computed_datasets:
+#     print("Testing Voxpopuli...")
+#     voxpopuli = datasets.load_dataset(
+#         "facebook/voxpopuli", "cs", split="test", trust_remote_code=True,
+#     )  # italian: 1177 samples (too often with incorrect labels)
+#     voxpopuli_wers_list, voxpopuli_stats = computeDataAndStats(
+#         dataset=voxpopuli,
+#         text_column_name="raw_text",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#         language=LANGUAGE,
+#     )
+#     saveOnDisk(data={"voxpopuli": voxpopuli_wers_list}, stats={"voxpopuli": voxpopuli_stats})
 
 # ################################ MLS #################################
 # if "mls" not in already_computed_datasets:
@@ -126,7 +126,7 @@ if "cv_22_0" not in already_computed_datasets:
     print("Testing CV-22.0...")
     cv_22_0 = datasets.load_dataset(
         "fsicoli/common_voice_22_0",
-        "cs",
+        "el",
         split="test",
         trust_remote_code=True,
         token=True,
@@ -139,19 +139,19 @@ if "cv_22_0" not in already_computed_datasets:
     )
     saveOnDisk(data={"cv_22_0": cv_22_0_wers_list}, stats={"cv_22_0": cv_22_0_stats})
 
-################################# Minds14 #################################
-if "mind_14" not in already_computed_datasets:
-    print("Testing Minds14...")
-    mind_14 = datasets.load_dataset(
-        "PolyAI/minds14", "cs-CZ", split="train", trust_remote_code=True
-    )  # italian: (too often with incorrect labels)
-    mind_14_wers_list, mind_14_stats = computeDataAndStats(
-        dataset=mind_14,
-        text_column_name="transcription",
-        inferenceFunction=INFERENCE_FUNCTION,
-        language=LANGUAGE,
-    )
-    saveOnDisk(data={"mind_14": mind_14_wers_list}, stats={"mind_14": mind_14_stats})
+# ################################# Minds14 #################################
+# if "mind_14" not in already_computed_datasets:
+#     print("Testing Minds14...")
+#     mind_14 = datasets.load_dataset(
+#         "PolyAI/minds14", "cs-CZ", split="train", trust_remote_code=True
+#     )  # italian: (too often with incorrect labels)
+#     mind_14_wers_list, mind_14_stats = computeDataAndStats(
+#         dataset=mind_14,
+#         text_column_name="transcription",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#         language=LANGUAGE,
+#     )
+#     saveOnDisk(data={"mind_14": mind_14_wers_list}, stats={"mind_14": mind_14_stats})
 
 # ################################# Speech-MASSIVE-test #################################
 # if "sm_test" not in already_computed_datasets:
@@ -200,29 +200,29 @@ if "mind_14" not in already_computed_datasets:
 #     )
 #     saveOnDisk(data={"echo": echo_wers_list}, stats={"echo": echo_stats})
 
-# # ################################# EuroSpeech #################################
-# if "eurospeech" not in already_computed_datasets:
-#     print("Testing EuroSpeech...")
-#     eurospeech = datasets.load_dataset(
-#         "disco-eth/EuroSpeech",
-#         "ukraine",
-#         split="test",
-#         # split="validation", # for italian
-#         trust_remote_code=True,
-#     )
-#     eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
-#         dataset=eurospeech,
-#         text_column_name="human_transcript",
-#         inferenceFunction=INFERENCE_FUNCTION,
-#         language=LANGUAGE,
-#     )
-#     saveOnDisk(data={"eurospeech": eurospeech_wers_list}, stats={"eurospeech": eurospeech_stats})
+# ################################# EuroSpeech #################################
+if "eurospeech" not in already_computed_datasets:
+    print("Testing EuroSpeech...")
+    eurospeech = datasets.load_dataset(
+        "disco-eth/EuroSpeech",
+        "greece",
+        split="test",
+        # split="validation", # for italian
+        trust_remote_code=True,
+    )
+    eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
+        dataset=eurospeech,
+        text_column_name="human_transcript",
+        inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
+    )
+    saveOnDisk(data={"eurospeech": eurospeech_wers_list}, stats={"eurospeech": eurospeech_stats})
 
 ################################# Fleurs #################################
 if "fleurs" not in already_computed_datasets:
     print("Testing Fleurs...")
     fleurs = datasets.load_dataset(
-        "google/fleurs", "cs_cz", split="test", trust_remote_code=True
+        "google/fleurs", "el_gr", split="test", trust_remote_code=True
     )
     fleurs_wers_list, fleurs_stats = computeDataAndStats(
         dataset=fleurs,

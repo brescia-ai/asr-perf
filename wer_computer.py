@@ -9,8 +9,8 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-LANGUAGE = "Swedish"
-OUTPUT_PATH = "results/sv/canary-1b-v2"
+LANGUAGE = "Portuguese"
+OUTPUT_PATH = "results/pt/canary-1b-v2"
 
 #
 ##
@@ -107,26 +107,26 @@ dotenv.load_dotenv(".env.secrets")
 #     )
 #     saveOnDisk(data={"voxpopuli": voxpopuli_wers_list}, stats={"voxpopuli": voxpopuli_stats})
 
-# ################################ MLS #################################
-# if "mls" not in already_computed_datasets:
-#     print("Testing MLS...")
-#     mls = datasets.load_dataset(
-#         "facebook/multilingual_librispeech", "dutch", split="test"
-#     )  # italian: 1260 samples
-#     mls_wers_list, mls_stats = computeDataAndStats(
-#         dataset=mls,
-#         text_column_name="transcript",
-#         inferenceFunction=INFERENCE_FUNCTION,
-#         language=LANGUAGE,
-#     )
-#     saveOnDisk(data={"mls": mls_wers_list}, stats={"mls": mls_stats})
+################################ MLS #################################
+if "mls" not in already_computed_datasets:
+    print("Testing MLS...")
+    mls = datasets.load_dataset(
+        "facebook/multilingual_librispeech", "portuguese", split="test"
+    )  # italian: 1260 samples
+    mls_wers_list, mls_stats = computeDataAndStats(
+        dataset=mls,
+        text_column_name="transcript",
+        inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
+    )
+    saveOnDisk(data={"mls": mls_wers_list}, stats={"mls": mls_stats})
 
 ################################ Common Voice 22.0 #################################
 if "cv_22_0" not in already_computed_datasets:
     print("Testing CV-22.0...")
     cv_22_0 = datasets.load_dataset(
         "fsicoli/common_voice_22_0",
-        "sv-SE",
+        "pt",
         split="test",
         trust_remote_code=True,
         token=True,
@@ -139,36 +139,36 @@ if "cv_22_0" not in already_computed_datasets:
     )
     saveOnDisk(data={"cv_22_0": cv_22_0_wers_list}, stats={"cv_22_0": cv_22_0_stats})
 
-# ################################# Minds14 #################################
-# if "mind_14" not in already_computed_datasets:
-#     print("Testing Minds14...")
-#     mind_14 = datasets.load_dataset(
-#         "PolyAI/minds14", "cs-CZ", split="train", trust_remote_code=True
-#     )  # italian: (too often with incorrect labels)
-#     mind_14_wers_list, mind_14_stats = computeDataAndStats(
-#         dataset=mind_14,
-#         text_column_name="transcription",
-#         inferenceFunction=INFERENCE_FUNCTION,
-#         language=LANGUAGE,
-#     )
-#     saveOnDisk(data={"mind_14": mind_14_wers_list}, stats={"mind_14": mind_14_stats})
+################################# Minds14 #################################
+if "mind_14" not in already_computed_datasets:
+    print("Testing Minds14...")
+    mind_14 = datasets.load_dataset(
+        "PolyAI/minds14", "pt-PT", split="train", trust_remote_code=True
+    )  # italian: (too often with incorrect labels)
+    mind_14_wers_list, mind_14_stats = computeDataAndStats(
+        dataset=mind_14,
+        text_column_name="transcription",
+        inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
+    )
+    saveOnDisk(data={"mind_14": mind_14_wers_list}, stats={"mind_14": mind_14_stats})
 
-# ################################# Speech-MASSIVE-test #################################
-# if "sm_test" not in already_computed_datasets:
-#     print("Testing Speech-MASSIVE-test...")
-#     sm_test = datasets.load_dataset(
-#         "FBK-MT/Speech-MASSIVE-test",
-#         "nl-NL",
-#         split="test",
-#         trust_remote_code=True,
-#     )
-#     sm_test_wers_list, sm_test_stats = computeDataAndStats(
-#         dataset=sm_test,
-#         text_column_name="utt",
-#         inferenceFunction=INFERENCE_FUNCTION,
-#         language=LANGUAGE,
-#     )
-#     saveOnDisk(data={"sm_test": sm_test_wers_list}, stats={"sm_test": sm_test_stats})
+################################# Speech-MASSIVE-test #################################
+if "sm_test" not in already_computed_datasets:
+    print("Testing Speech-MASSIVE-test...")
+    sm_test = datasets.load_dataset(
+        "FBK-MT/Speech-MASSIVE-test",
+        "pt-PT",
+        split="test",
+        trust_remote_code=True,
+    )
+    sm_test_wers_list, sm_test_stats = computeDataAndStats(
+        dataset=sm_test,
+        text_column_name="utt",
+        inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
+    )
+    saveOnDisk(data={"sm_test": sm_test_wers_list}, stats={"sm_test": sm_test_stats})
 
 # ################################# Romanian speech synthesis 0.8.1 #################################
 # if "rss_0_8_1" not in already_computed_datasets:
@@ -200,29 +200,29 @@ if "cv_22_0" not in already_computed_datasets:
 #     )
 #     saveOnDisk(data={"echo": echo_wers_list}, stats={"echo": echo_stats})
 
-# ################################# EuroSpeech #################################
-if "eurospeech" not in already_computed_datasets:
-    print("Testing EuroSpeech...")
-    eurospeech = datasets.load_dataset(
-        "disco-eth/EuroSpeech",
-        "sweden",
-        split="test",
-        # split="validation", # for italian
-        trust_remote_code=True,
-    )
-    eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
-        dataset=eurospeech,
-        text_column_name="human_transcript",
-        inferenceFunction=INFERENCE_FUNCTION,
-        language=LANGUAGE,
-    )
-    saveOnDisk(data={"eurospeech": eurospeech_wers_list}, stats={"eurospeech": eurospeech_stats})
+# # ################################# EuroSpeech #################################
+# if "eurospeech" not in already_computed_datasets:
+#     print("Testing EuroSpeech...")
+#     eurospeech = datasets.load_dataset(
+#         "disco-eth/EuroSpeech",
+#         "portugal",
+#         split="test",
+#         # split="validation", # for italian
+#         trust_remote_code=True,
+#     )
+#     eurospeech_wers_list, eurospeech_stats = computeDataAndStats(
+#         dataset=eurospeech,
+#         text_column_name="human_transcript",
+#         inferenceFunction=INFERENCE_FUNCTION,
+#         language=LANGUAGE,
+#     )
+#     saveOnDisk(data={"eurospeech": eurospeech_wers_list}, stats={"eurospeech": eurospeech_stats})
 
 ################################# Fleurs #################################
 if "fleurs" not in already_computed_datasets:
     print("Testing Fleurs...")
     fleurs = datasets.load_dataset(
-        "google/fleurs", "sv_se", split="test", trust_remote_code=True
+        "google/fleurs", "pt_br", split="test", trust_remote_code=True
     )
     fleurs_wers_list, fleurs_stats = computeDataAndStats(
         dataset=fleurs,

@@ -90,7 +90,7 @@ We consider an AI model deployable on one given language if its performance is e
 11. ✅ Czech (cs)
 12. ❌ Greek (el)
 13. ❌ Swedish (sv)
-14. Portuguese (pt)
+14. ❌ Portuguese (pt)
 15. Hungarian (hu)
 16. Slovak (sk)
 17. Finnish (fi)

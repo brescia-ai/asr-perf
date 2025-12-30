@@ -9,8 +9,8 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-LANGUAGE = "Latvian"
-OUTPUT_PATH = "results/lv/canary-1b-v2"
+LANGUAGE = "Bulgarian"
+OUTPUT_PATH = "results/bg/canary-1b-v2"
 
 #
 ##
@@ -126,7 +126,7 @@ if "cv_22_0" not in already_computed_datasets:
     print("Testing CV-22.0...")
     cv_22_0 = datasets.load_dataset(
         "fsicoli/common_voice_22_0",
-        "lv",
+        "bg",
         split="test",
         trust_remote_code=True,
         token=True,
@@ -205,7 +205,7 @@ if "eurospeech" not in already_computed_datasets:
     print("Testing EuroSpeech...")
     eurospeech = datasets.load_dataset(
         "disco-eth/EuroSpeech",
-        "latvia",
+        "bulgaria",
         split="test",
         # split="validation", # for italian
         trust_remote_code=True,
@@ -222,7 +222,7 @@ if "eurospeech" not in already_computed_datasets:
 if "fleurs" not in already_computed_datasets:
     print("Testing Fleurs...")
     fleurs = datasets.load_dataset(
-        "google/fleurs", "lv_lv", split="test", trust_remote_code=True
+        "google/fleurs", "bg_bg", split="test", trust_remote_code=True
     )
     fleurs_wers_list, fleurs_stats = computeDataAndStats(
         dataset=fleurs,

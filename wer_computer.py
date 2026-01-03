@@ -9,8 +9,8 @@ import os
 import dotenv
 
 INFERENCE_FUNCTION = asr_client.inferenceFunction
-LANGUAGE = "Bulgarian"
-OUTPUT_PATH = "results/bg/canary-1b-v2"
+LANGUAGE = "Danish"
+OUTPUT_PATH = "results/da/canary-1b-v2"
 
 #
 ##
@@ -126,7 +126,7 @@ if "cv_22_0" not in already_computed_datasets:
     print("Testing CV-22.0...")
     cv_22_0 = datasets.load_dataset(
         "fsicoli/common_voice_22_0",
-        "bg",
+        "da",
         split="test",
         trust_remote_code=True,
         token=True,
@@ -205,7 +205,7 @@ if "eurospeech" not in already_computed_datasets:
     print("Testing EuroSpeech...")
     eurospeech = datasets.load_dataset(
         "disco-eth/EuroSpeech",
-        "bulgaria",
+        "denmark",
         split="test",
         # split="validation", # for italian
         trust_remote_code=True,
@@ -222,7 +222,7 @@ if "eurospeech" not in already_computed_datasets:
 if "fleurs" not in already_computed_datasets:
     print("Testing Fleurs...")
     fleurs = datasets.load_dataset(
-        "google/fleurs", "bg_bg", split="test", trust_remote_code=True
+        "google/fleurs", "da_dk", split="test", trust_remote_code=True
     )
     fleurs_wers_list, fleurs_stats = computeDataAndStats(
         dataset=fleurs,
@@ -232,33 +232,33 @@ if "fleurs" not in already_computed_datasets:
     )
     saveOnDisk(data={"fleurs": fleurs_wers_list}, stats={"fleurs": fleurs_stats})
 
-# ################################# ftspeech (danish only) #################################
-# if "ftspeech" not in already_computed_datasets:
-#     print("Testing ftspeech...")
-#     ftspeech = datasets.load_dataset(
-#         "alexandrainst/ftspeech", "default", split="test_balanced", trust_remote_code=True
-#     )
-#     ftspeech_wers_list, ftspeech_stats = computeDataAndStats(
-#         dataset=ftspeech,
-#         text_column_name="sentence",
-#         inferenceFunction=INFERENCE_FUNCTION,
-#         language=LANGUAGE,
-#     )
-#     saveOnDisk(data={"ftspeech": ftspeech_wers_list}, stats={"ftspeech": ftspeech_stats})
+################################# ftspeech (danish only) #################################
+if "ftspeech" not in already_computed_datasets:
+    print("Testing ftspeech...")
+    ftspeech = datasets.load_dataset(
+        "alexandrainst/ftspeech", "default", split="test_balanced", trust_remote_code=True
+    )
+    ftspeech_wers_list, ftspeech_stats = computeDataAndStats(
+        dataset=ftspeech,
+        text_column_name="sentence",
+        inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
+    )
+    saveOnDisk(data={"ftspeech": ftspeech_wers_list}, stats={"ftspeech": ftspeech_stats})
 
-# ################################# nst-da (danish only) #################################
-# if "nst_da" not in already_computed_datasets:
-#     print("Testing nst-da...")
-#     nst_da = datasets.load_dataset(
-#         "alexandrainst/nst-da", "default", split="test", trust_remote_code=True
-#     )
-#     nst_da_wers_list, nst_da_stats = computeDataAndStats(
-#         dataset=nst_da,
-#         text_column_name="text",
-#         inferenceFunction=INFERENCE_FUNCTION,
-#         language=LANGUAGE,
-#     )
-#     saveOnDisk(data={"nst_da": nst_da_wers_list}, stats={"nst_da": nst_da_stats})
+################################# nst-da (danish only) #################################
+if "nst_da" not in already_computed_datasets:
+    print("Testing nst-da...")
+    nst_da = datasets.load_dataset(
+        "alexandrainst/nst-da", "default", split="test", trust_remote_code=True
+    )
+    nst_da_wers_list, nst_da_stats = computeDataAndStats(
+        dataset=nst_da,
+        text_column_name="text",
+        inferenceFunction=INFERENCE_FUNCTION,
+        language=LANGUAGE,
+    )
+    saveOnDisk(data={"nst_da": nst_da_wers_list}, stats={"nst_da": nst_da_stats})
 
 # ################################# masri_dev (maltese only) #################################
 # if "masri_dev" not in already_computed_datasets:

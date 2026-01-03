@@ -98,5 +98,5 @@ We consider an AI model deployable on one given language if its performance is e
 21. ❌ Latvian (lv)
 22. ❌ Bulgarian (bg)
 23. ❌ Danish (da)
-24. Estonian (et)
+24. ❌ Estonian (et)
 25. Maltese (mt)

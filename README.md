@@ -4,7 +4,7 @@ Assessing the performance of ASR systems.
 ## Datasets
 
 ✓ = dataset available for this language
-✕ = dataset not available for this language
+✕ = dataset NOT available for this language
 
 | Language        | Voxpopuli | MLS | Common Voice 22.0 | Minds14 | Speech-MASSIVE-test | romanian_speech_synthesis_0_8_1  | echo | EuroSpeech | ftspeech | nst-da | masri_dev | fleurs |
 |-----------------|-----------|-----|-------------------|---------|---------------------|----------------------------------|------|------------|----------|--------|-----------|--------|
@@ -99,4 +99,4 @@ We consider an AI model deployable on one given language if its performance is e
 22. ❌ Bulgarian (bg)
 23. ❌ Danish (da)
 24. ❌ Estonian (et)
-25. Maltese (mt)
+25. ❌ Maltese (mt)
